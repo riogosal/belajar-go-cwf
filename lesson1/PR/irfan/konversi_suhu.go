@@ -10,7 +10,6 @@ func convertTempToCelcius(fahrenheit float32) {
 
 func main() {
 	type temp float32
-	var fahrenheit int = 250
-	println(fahrenheit)
+	var fahrenheit temp = 250
 	convertTempToCelcius(float32(fahrenheit))
 }
