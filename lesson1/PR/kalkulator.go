@@ -8,36 +8,26 @@ import (
 func main() {
 	var angka1 string
 	var angka2 string
-<<<<<<< HEAD
-
-=======
->>>>>>> a581ee45a48831c616c410ce9eef3560c12ef911
 	var inputangka1 int
 	var inputangka2 int
 
 	var err error
 
 	for {
-<<<<<<< HEAD
 		fmt.Println("\nPilihan Operator:")
-=======
 		fmt.Println("Pilihan Operasi:")
->>>>>>> a581ee45a48831c616c410ce9eef3560c12ef911
 		fmt.Println("1. Penjumlahan")
 		fmt.Println("2. Pengurangan")
 		fmt.Println("3. Perkalian")
 		fmt.Println("4. Pembagian")
-<<<<<<< HEAD
 		fmt.Println("5. Exit")
 		fmt.Print("Silahkan Pilih : ")
 
 		var pilihan string
 
-=======
 		fmt.Println("5. Keluar")
 		fmt.Print("Pilih operasi (1/2/3/4/5): ")
-		var pilihan string
->>>>>>> a581ee45a48831c616c410ce9eef3560c12ef911
+
 		fmt.Scanln(&pilihan)
 
 		if pilihan == "5" {
@@ -48,7 +38,6 @@ func main() {
 			continue
 		}
 
-<<<<<<< HEAD
 		var operator string
 
 		switch pilihan {
@@ -64,9 +53,7 @@ func main() {
 
 		fmt.Printf("Anda memilih: %s\n", operator)
 
-=======
 		fmt.Println("Menu", pilihan)
->>>>>>> a581ee45a48831c616c410ce9eef3560c12ef911
 		fmt.Print("Angka Pertama: ")
 		fmt.Scanln(&angka1)
 
