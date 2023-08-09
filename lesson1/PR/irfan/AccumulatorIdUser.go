@@ -59,7 +59,7 @@ func dataMedian(sliceData []int) {
 		sort.Ints(sliceData)
 
 		medianGanjil := (len(sliceData) + 1) / 2
-		ResultMedian := medianGanjil
+		ResultMedian := medianGanjil - 1
 		fmt.Println("Hasil dari median User Id adalah = ", sliceData[ResultMedian])
 	}
 
