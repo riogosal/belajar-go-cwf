@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 	"time"
 )
 
-func heartBeat() {
+func proses() {
 	time.Sleep(time.Second * 3)
 	fmt.Println("Program telah dipersiapkan...")
 
@@ -42,7 +43,10 @@ func inputDataIdUsers() {
 }
 
 func dataMedian(sliceData []int) {
+
 	if len(sliceData)%2 == 0 {
+		sort.Ints(sliceData)
+
 		medianGenapSatu := (len(sliceData) / 2)
 		medianGenapSatu = sliceData[medianGenapSatu-1]
 		medianGenapDua := (len(sliceData) / 2) + 1
@@ -52,6 +56,8 @@ func dataMedian(sliceData []int) {
 
 		fmt.Printf("Hasil dari median User Id adalah = %.2f\n", ResultMedian)
 	} else {
+		sort.Ints(sliceData)
+
 		medianGanjil := (len(sliceData) + 1) / 2
 		ResultMedian := medianGanjil
 		fmt.Printf("Hasil dari median User Id adalah = ", ResultMedian)
@@ -71,7 +77,7 @@ func ResultData(sliceData []int) {
 
 func main() {
 	fmt.Println("Go runs Program akumulasi Id Users On ")
-	heartBeat()
+	proses()
 	inputDataIdUsers()
 
 }
