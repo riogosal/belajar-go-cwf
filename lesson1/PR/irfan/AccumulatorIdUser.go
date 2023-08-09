@@ -52,7 +52,7 @@ func dataMedian(sliceData []int) {
 		medianGenapDua := (len(sliceData) / 2) + 1
 		medianGenapDua = sliceData[medianGenapDua-1]
 
-		ResultMedian := float32(medianGenapSatu) / float32(medianGenapDua)
+		ResultMedian := (float32(medianGenapSatu) + float32(medianGenapDua)) / 2
 
 		fmt.Printf("Hasil dari median User Id adalah = %.2f\n", ResultMedian)
 	} else {
@@ -60,7 +60,7 @@ func dataMedian(sliceData []int) {
 
 		medianGanjil := (len(sliceData) + 1) / 2
 		ResultMedian := medianGanjil
-		fmt.Printf("Hasil dari median User Id adalah = ", ResultMedian)
+		fmt.Println("Hasil dari median User Id adalah = ", sliceData[ResultMedian])
 	}
 
 }
