@@ -77,6 +77,4 @@ func median(numbers []int) float32 {
 
 		return hasil
 	}
-	// 20, 28, 35, 37, 41, 43, 55, 58, 60, 63, 70, 74, 76, 84
-	return float32(length)
 }
