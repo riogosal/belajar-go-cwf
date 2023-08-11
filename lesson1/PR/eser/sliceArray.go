@@ -74,7 +74,6 @@ func median(numbers []int) float32 {
 		nilai_length1 := numbers[(length-1)/2]
 		nilai_length2 := numbers[(length / 2)]
 		hasil := (float32(nilai_length1) + float32(nilai_length2)) / 2
-
 		return hasil
 	}
 }
