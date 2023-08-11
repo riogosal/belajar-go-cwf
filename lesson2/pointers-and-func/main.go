@@ -8,9 +8,8 @@ package main
 // 	fmt.Println("Ello")
 // }
 
-func tambah1(nomor int) int {
-	nomor = nomor + 1
-	return nomor
+func tambah1(nomor *int) {
+	*nomor = *nomor + 1
 }
 
 // func tambah1_pointer(nomor *int) {
@@ -30,7 +29,7 @@ func main() {
 
 	nomorku := 0
 	for x := int64(0); x < 1_000_000_000; x++ {
-		nomorku = tambah1(nomorku)
+		tambah1(&nomorku)
 	}
 
 	// ekspektasi 16
