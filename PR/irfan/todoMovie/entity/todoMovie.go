@@ -42,7 +42,6 @@ type Genre struct {
 // func (m *Movies) cetakFilmDigimon() {}
 
 func (Movies1 *Movies) CetakMovies() {
-	// Movies1 := DataMovies()
 
 	fmt.Println("Nowing Playings...")
 	fmt.Println("================================================================")

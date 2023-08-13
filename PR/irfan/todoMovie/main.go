@@ -4,11 +4,7 @@ import (
 	"app-movies/entity"
 )
 
-func CetakMovies() {
-
-}
-
-func main() {
+func DataHarryPotter() *entity.Movies {
 	DataHarryPotter := entity.Movies{
 		UUID:    1,
 		Title:   "HARRY POTTER AND THE SORCERER’S STONE",
@@ -29,5 +25,11 @@ func main() {
 		IMDb: 7.6,
 	}
 
-	DataHarryPotter.CetakMovies()
+	return &DataHarryPotter
+}
+
+func main() {
+
+	film1 := DataHarryPotter()
+	film1.CetakMovies()
 }
