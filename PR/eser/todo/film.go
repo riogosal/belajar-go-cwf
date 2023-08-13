@@ -61,10 +61,13 @@ func main() {
 			{
 				Nama: "Action",
 			},
+			{
+				Nama: "Romantic",
+			},
 		},
 	}
 
-	daftarFilm := [...]entity.Movie{film1, film2}
+	daftarFilm := []entity.Movie{film1, film2}
 	for _, film := range daftarFilm {
 		film.PrintStuff()
 	}

@@ -27,10 +27,6 @@ func (j Jadwal) PrintJadwal() {
 	fmt.Println("Tempat Tayang : ", j.Tempat)
 }
 
-func (g Gendre) PrintGendre() {
-	fmt.Println("Gendre      : ", g.Nama)
-}
-
 func (movie Movie) PrintStuff() {
 	fmt.Println("Id          : ", movie.ID)
 	fmt.Println("Judul Film  : ", movie.Judul)
@@ -38,13 +34,17 @@ func (movie Movie) PrintStuff() {
 	fmt.Println("Studio      : ", movie.Studio)
 	fmt.Println("Durasi Film : ", movie.Durasi)
 	fmt.Println("Status      : ", movie.Status)
-	// fmt.Println("Jadwal      : ", movie.JadwalTayang)
+
 	for _, movie := range movie.JadwalTayang {
 		movie.PrintJadwal()
 	}
 
-	for _, movie := range movie.GendreFilm {
-		movie.PrintGendre()
+	namagendre := ""
+	for length, gendre := range movie.GendreFilm {
+		if length > 0 {
+			namagendre += ", "
+		}
+		namagendre += gendre.Nama
 	}
-	// fmt.Println("Gendre      : ", movie.GendreFilm)
+	fmt.Println("Gendre Film : ", namagendre)
 }
