@@ -3,13 +3,10 @@ package entity
 import "fmt"
 
 type Movies struct {
-	UUID    int64
-	Title   string
-	Desc    string
-	Year    int16
-	Country string
-	Genre   []Genre
-	IMDb    float32
+	UUID, Year           int16
+	Title, Desc, Country string
+	Genre                []Genre
+	IMDb                 float32
 }
 
 type Genre struct {
@@ -36,6 +33,8 @@ func DataMovies() *Movies {
 		},
 		IMDb: 7.6,
 	}
+
+	DataHarryPotter.UUID = 2
 
 	return &DataHarryPotter
 }
