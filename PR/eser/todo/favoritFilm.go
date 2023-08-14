@@ -39,7 +39,6 @@ func main() {
 					film.printFilm()
 				}
 			}
-			fmt.Println("Kamu Belum membuat Film favorit ")
 
 		} else if inputMenu != "1" && inputMenu != "2" && inputMenu != "3" {
 			fmt.Println("Menu yang di pilih tidak ada!")
@@ -56,7 +55,7 @@ type Film struct {
 	Gendre            string
 }
 
-func (film Film) printFilm() {
+func (film *Film) printFilm() {
 	fmt.Println("Judul Film     : ", film.Judul)
 	fmt.Println("Rating Film    : ", film.Rating)
 	fmt.Println("Deskripsi Film : ", film.Deskripsi)
@@ -79,17 +78,15 @@ func InputData(DataInput *[]Film) {
 	judul, _ = scanner.ReadString('\n')
 	judul = strings.TrimSpace(judul)
 
-	if judul != "" {
-		fmt.Print("Masukkan Rating: ")
-		ratingStr, _ := scanner.ReadString('\n')
-		ratingStr = strings.TrimSpace(ratingStr) // menghilangkan karakter '\n'
-		rating, err := strconv.ParseFloat(ratingStr, 64)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-		rating = float64(rating)
+	fmt.Print("Masukkan Rating: ")
+	ratingStr, _ := scanner.ReadString('\n')
+	ratingStr = strings.TrimSpace(ratingStr) // menghilangkan karakter '\n'
+	newRating, err := strconv.ParseFloat(ratingStr, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
 	}
+	rating = newRating
 
 	fmt.Print("Masukkan Deskripsi : ")
 	deskripsi, _ = scanner.ReadString('\n')
@@ -101,12 +98,13 @@ func InputData(DataInput *[]Film) {
 
 	fmt.Print("Masukkan durasi : ")
 	durasiStr, _ := scanner.ReadString('\n')
-	durasiStr = strings.TrimSpace(strings.TrimSuffix(durasiStr, "\n"))
-	durasi, err := strconv.Atoi(durasiStr)
+	durasiStr = strings.TrimSpace(durasiStr)
+	newDurasi, err := strconv.Atoi(durasiStr)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
+	durasi = newDurasi
 
 	fmt.Print("Masukkan Gendre : ")
 	gendre, _ = scanner.ReadString('\n')
