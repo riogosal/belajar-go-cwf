@@ -31,9 +31,10 @@ func Kalkulator(nilaiA int, nilaiB int, operator string) {
 
 }
 
+type cal string
+type value int16
+
 func main() {
-	type value int16
-	type cal string
 	fmt.Println("Go runs Program Kalkulator On ")
 
 	fmt.Println("Masukkan Nilai A :")
