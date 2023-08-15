@@ -75,10 +75,10 @@ func UpdateData(DataInput *[]Film) {
 	fmt.Println(*DataInput)
 
 	var judul string
-	scanner := bufio.NewReader(os.Stdin)
+	// scanner := bufio.NewReader(os.Stdin)
 	fmt.Print("Update Judul: ")
-	judul, _ = scanner.ReadString('\n')
-	judul = strings.TrimSpace(judul)
+	// judul, _ = scanner.ReadString('\n')
+	// judul = strings.TrimSpace(judul)
 
 	for _, value := range *DataInput {
 		fmt.Printf("%p", &value)
