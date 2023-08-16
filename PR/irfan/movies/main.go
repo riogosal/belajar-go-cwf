@@ -50,7 +50,7 @@ func InputDataFilmFavorite(data *entity.Movies) {
 	data.Country, _ = scanner.ReadString('\n')
 	data.Country = strings.TrimSpace(data.Country)
 
-	InputGenreFilms(data)
+	GenreFilms(data)
 
 	fmt.Print("Masukkan Rating Film favorite: ")
 	var rate entity.Rating
@@ -60,20 +60,31 @@ func InputDataFilmFavorite(data *entity.Movies) {
 
 }
 
-func InputGenreFilms(data *entity.Movies) {
+func GenreFilms(data *entity.Movies) {
+	var no int = 1
+	if data.Genre == nil {
+		for {
+			// Masukkan data Genre
+			fmt.Print("Masukkan Genre Film favorite, tekan (e) Exit : ")
+			var InputGenre entity.Genre
+			fmt.Scanln(&InputGenre)
 
-	for {
-		// Masukkan data Genre
-		fmt.Print("Masukkan Genre Film favorite, tekan (e) Exit : ")
-		var InputGenre entity.Genre
-		fmt.Scanln(&InputGenre)
+			if InputGenre == "e" {
+				break
+			} else {
+				data.Genre = append(data.Genre, InputGenre)
+			}
 
-		if InputGenre == "e" {
-			break
-		} else {
-			data.Genre = append(data.Genre, InputGenre)
 		}
-
+	} else {
+		for i, v := range data.Genre {
+			fmt.Println(no, "Genre : ", v)
+			fmt.Println("Update genre : ", no)
+			var choiceGenre entity.Genre
+			fmt.Scanln(&choiceGenre)
+			data.Genre[i] = choiceGenre
+			no++
+		}
 	}
 }
 
@@ -81,7 +92,7 @@ func UpdateDataFilmFavorite(data *entity.Movies) {
 	scanner := bufio.NewReader(os.Stdin)
 myLoops:
 	for {
-		fmt.Println("Silahakan pilih menu, 1. Ubah Judul, 2. Ubah Deskripsi, 3. Ubah Tahun ,4. Ubah Negara, 5. Ubah Rating, e (exit) :")
+		fmt.Println("Silahakan pilih menu, 1. Ubah Judul, 2. Ubah Deskripsi, 3. Ubah Tahun , 4. Ubah Negara, 5. Ubah Rating, 6. Update Genre, e (exit) :")
 		var choiceUpdate string
 		fmt.Scanln(&choiceUpdate)
 		switch choiceUpdate {
@@ -117,6 +128,8 @@ myLoops:
 			fmt.Scanln(&rate)
 
 			data.IMDb = rate
+		case "6":
+			GenreFilms(data)
 		default:
 			break myLoops
 
@@ -139,7 +152,14 @@ myLoop:
 
 		switch choice {
 		case "1":
-			InputDataFilmFavorite(&TampungDataMovies)
+			if TampungDataMovies.UUID == 0 {
+				if TampungDataMovies.UUID == 0 {
+					InputDataFilmFavorite(&TampungDataMovies)
+				} else {
+					fmt.Println("Data Sudah Ada !")
+				}
+
+			}
 			fmt.Println(" Data Telah Ditambahkan ! ")
 		case "2":
 			if TampungDataMovies.UUID == 0 {
