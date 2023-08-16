@@ -65,7 +65,7 @@ func (film Film) printFilm() {
 	fmt.Println("Gendre Film    : ", film.Gendre)
 }
 
-func InputData(DataInput *[]Film) {
+func InputData(DataInput *Film) {
 	var judul string
 	var rating float64
 	var deskripsi string
