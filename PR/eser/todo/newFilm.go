@@ -71,62 +71,87 @@ func InputDataFilm(film *Film) {
 }
 
 func UpdateNewFilm(film *Film) {
-	scanner := bufio.NewReader(os.Stdin)
-
-	fmt.Print("Masukkan Judul: ")
-	film.Judul, _ = scanner.ReadString('\n')
-	film.Judul = strings.TrimSpace(film.Judul)
-
-	fmt.Print("Masukkan Rating: ")
-	ratingStr, _ := scanner.ReadString('\n')
-	ratingStr = strings.TrimSpace(ratingStr) // menghilangkan karakter '\n'
-	newRating, err := strconv.ParseFloat(ratingStr, 64)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
+	if film.Judul != "" {
+		scanner := bufio.NewReader(os.Stdin)
+		for {
+			fmt.Println("Silahkan pilih menu, 1. Update Judul, 2. Update Rating 3.Update Deskripsi 4. Update Studio, 5.Update Durasi, 6.Update Genre, (e) exit")
+			var updateData string
+			fmt.Scanln(&updateData)
+			switch updateData {
+			case "1":
+				fmt.Print("Masukkan Judul Baru: ")
+				film.Judul, _ = scanner.ReadString('\n')
+				film.Judul = strings.TrimSpace(film.Judul)
+				fmt.Println("Judul berhasil diubah:", film.Judul)
+				return
+			case "2":
+				fmt.Print("Masukkan Rating: ")
+				ratingStr, _ := scanner.ReadString('\n')
+				ratingStr = strings.TrimSpace(ratingStr) // menghilangkan karakter '\n'
+				newRating, err := strconv.ParseFloat(ratingStr, 64)
+				if err != nil {
+					fmt.Println("Error:", err)
+					return
+				}
+				film.Rating = newRating
+				fmt.Println("Rating berhasil diubah:", film.Rating)
+				return
+			case "3":
+				fmt.Print("Masukkan Deskripsi : ")
+				film.Deskripsi, _ = scanner.ReadString('\n')
+				film.Deskripsi = strings.TrimSpace(film.Deskripsi)
+				fmt.Println("Deskripsi berhasil diubah:", film.Deskripsi)
+				return
+			case "4":
+				fmt.Print("Masukkan Studio : ")
+				film.Studio, _ = scanner.ReadString('\n')
+				film.Studio = strings.TrimSpace(film.Studio)
+				fmt.Println("Studio berhasil diubah:", film.Studio)
+			case "5":
+				fmt.Print("Masukkan durasi : ")
+				durasiStr, _ := scanner.ReadString('\n')
+				durasiStr = strings.TrimSpace(durasiStr)
+				newDurasi, err := strconv.Atoi(durasiStr)
+				if err != nil {
+					fmt.Println("Error:", err)
+					return
+				}
+				film.Durasi = newDurasi
+				fmt.Println("Judul berhasil Durasi:", film.Durasi)
+			case "6":
+				UpdateGenre(film)
+				return
+			case "e":
+				return
+			}
+		}
+	} else {
+		fmt.Println("Kamu belum memiliki data Film Favorit, Silahkan Input Film Terlebih dahulu")
 	}
-	film.Rating = newRating
-
-	fmt.Print("Masukkan Deskripsi : ")
-	film.Deskripsi, _ = scanner.ReadString('\n')
-	film.Deskripsi = strings.TrimSpace(film.Deskripsi)
-
-	fmt.Print("Masukkan Studio : ")
-	film.Studio, _ = scanner.ReadString('\n')
-	film.Studio = strings.TrimSpace(film.Studio)
-
-	fmt.Print("Masukkan durasi : ")
-	durasiStr, _ := scanner.ReadString('\n')
-	durasiStr = strings.TrimSpace(durasiStr)
-	newDurasi, err := strconv.Atoi(durasiStr)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	film.Durasi = newDurasi
-
-	InputDataGenre(film)
 }
 
 func DataFilm(film *Film) {
-	fmt.Println("Daftar Film favorit")
-	fmt.Println("Judul     :", film.Judul)
-	fmt.Println("Deskripsi :", film.Deskripsi)
-	fmt.Println("Studio    :", film.Studio)
-	fmt.Println("Durasi    :", film.Durasi)
-	fmt.Println("Genre     :")
-
-	length := len(film.Genres) - 1 // angaplah panjangnya 2
-
-	for i, dataGenre := range film.Genres {
-		fmt.Print(dataGenre)
-		//pada saat ku loop, akan diperiksa apakah elemen tersebut adalah elemen terakhir, membandingkan index i dengan length (2)
-		//Jika elemen tersebut bukan elemen terakhir, maka tambahkan koma.
-		//Jika elemen tersebut adalah elemen terakhir, jangan tambahkan koma
-		if i < length {
-			fmt.Print(", ")
+	if film.Judul != "" {
+		fmt.Println("Daftar Film favorit")
+		fmt.Println("Judul     :", film.Judul)
+		fmt.Println("Deskripsi :", film.Deskripsi)
+		fmt.Println("Studio    :", film.Studio)
+		fmt.Println("Durasi    :", film.Durasi)
+		fmt.Print("Genre     : ")
+		length := len(film.Genres) - 1 // angaplah panjangnya 2
+		for i, dataGenre := range film.Genres {
+			fmt.Print(dataGenre)
+			//pada saat ku loop, akan diperiksa apakah elemen tersebut adalah elemen terakhir, membandingkan index i dengan length (2)
+			//Jika elemen tersebut bukan elemen terakhir, maka tambahkan koma.
+			//Jika elemen tersebut adalah elemen terakhir, jangan tambahkan koma
+			if i < length {
+				fmt.Print(", ")
+			}
 		}
+	} else {
+		fmt.Println("Kamu belum memiliki daftar film Favorit, Silahkan Input Film Terlebih Dahulu")
 	}
+
 }
 
 func UpdateGenre(film *Film) {
@@ -143,7 +168,7 @@ func UpdateGenre(film *Film) {
 		return
 	}
 
-	if inputGenre < 1 || inputGenre > len(film.Genres) { // Kita buat validasi, kalau user input 0 itu tidak bisa, karena index sekarang dihitung dari 1
+	if inputGenre < 1 || inputGenre > len(film.Genres) { // Kita buat validasi, kalau user input 0 itu tidak bisa, ///karena index sekarang dihitung dari 1
 		fmt.Println("Nomor tidak valid") // kita hitung len (film.genders) lalu kita bandingkan dgn data yng di input, Intinya tidak boleh melebihi nilai Len
 		return
 	}
@@ -170,8 +195,8 @@ func main() {
 		fmt.Println("2. Tampilkan Film ")
 		fmt.Println("3. Update Film ")
 		fmt.Println("4. Hapus ")
-		fmt.Println("5. Update Genres ")
-		fmt.Println("Pilih Menu (1,2,3,4), Ketik (e) untuk keluar")
+		fmt.Println("5. Update Genre ")
+		fmt.Println("Pilih Menu (1,2,3,4,5), Ketik (e) untuk keluar")
 		fmt.Print("Input Menu : ")
 
 		var inputMenu string
