@@ -107,6 +107,7 @@ func UpdateNewFilm(film *Film) {
 				film.Studio, _ = scanner.ReadString('\n')
 				film.Studio = strings.TrimSpace(film.Studio)
 				fmt.Println("Studio berhasil diubah:", film.Studio)
+				return
 			case "5":
 				fmt.Print("Masukkan durasi : ")
 				durasiStr, _ := scanner.ReadString('\n')
@@ -118,6 +119,7 @@ func UpdateNewFilm(film *Film) {
 				}
 				film.Durasi = newDurasi
 				fmt.Println("Judul berhasil Durasi:", film.Durasi)
+				return
 			case "6":
 				UpdateGenre(film)
 				return
