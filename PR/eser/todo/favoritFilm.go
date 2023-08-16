@@ -16,6 +16,7 @@ func main() {
 		fmt.Println("Menu: ")
 		fmt.Println("1. Buat Film Favorit ")
 		fmt.Println("2. Tampilkan Film ")
+		fmt.Println("3.  Update Film ")
 		fmt.Println("Pilih Menu (1,2), Ketik (e) untuk keluar")
 		fmt.Print("Input Menu : ")
 
@@ -34,13 +35,18 @@ func main() {
 			fmt.Println("Film favorit telah di input pilih menu (2) untuk melihat film")
 		} else if inputMenu == "2" {
 			if statuDataFilm {
-				fmt.Println("Daftar Film Favorit:")
+				fmt.Println("Daftar Film Favorit Kamu :")
 				for _, film := range DataInput {
 					film.printFilm()
 				}
 			}
-			fmt.Println("Kamu Belum membuat Film favorit ")
 
+		} else if inputMenu == "3" {
+			fmt.Println("Update Film Favorit")
+
+			UpdateData(&DataInput)
+
+			statuDataFilm = true
 		} else if inputMenu != "1" && inputMenu != "2" && inputMenu != "3" {
 			fmt.Println("Menu yang di pilih tidak ada!")
 			continue
@@ -56,7 +62,7 @@ type Film struct {
 	Gendre            string
 }
 
-func (film Film) printFilm() {
+func (film *Film) printFilm() {
 	fmt.Println("Judul Film     : ", film.Judul)
 	fmt.Println("Rating Film    : ", film.Rating)
 	fmt.Println("Deskripsi Film : ", film.Deskripsi)
@@ -64,8 +70,30 @@ func (film Film) printFilm() {
 	fmt.Println("Durasi Film    : ", film.Durasi)
 	fmt.Println("Gendre Film    : ", film.Gendre)
 }
+func UpdateData(DataInput *[]Film) {
+	fmt.Println(&DataInput)
+	fmt.Println(*DataInput)
 
+<<<<<<< HEAD
 func InputData(DataInput *Film) {
+=======
+	var judul string
+	// scanner := bufio.NewReader(os.Stdin)
+	fmt.Print("Update Judul: ")
+	// judul, _ = scanner.ReadString('\n')
+	// judul = strings.TrimSpace(judul)
+
+	for _, value := range *DataInput {
+		fmt.Printf("%p", &value)
+		value.Judul = judul
+		fmt.Println(value.Judul)
+	}
+
+	// *DataInput * []Film.Judul = judul
+
+}
+func InputData(DataInput *[]Film) {
+>>>>>>> 5615a72f8b392a70c785d112c84dcec7f3ec42b8
 	var judul string
 	var rating float64
 	var deskripsi string
@@ -79,17 +107,15 @@ func InputData(DataInput *Film) {
 	judul, _ = scanner.ReadString('\n')
 	judul = strings.TrimSpace(judul)
 
-	if judul != "" {
-		fmt.Print("Masukkan Rating: ")
-		ratingStr, _ := scanner.ReadString('\n')
-		ratingStr = strings.TrimSpace(ratingStr) // menghilangkan karakter '\n'
-		rating, err := strconv.ParseFloat(ratingStr, 64)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-		rating = float64(rating)
+	fmt.Print("Masukkan Rating: ")
+	ratingStr, _ := scanner.ReadString('\n')
+	ratingStr = strings.TrimSpace(ratingStr) // menghilangkan karakter '\n'
+	newRating, err := strconv.ParseFloat(ratingStr, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
 	}
+	rating = newRating
 
 	fmt.Print("Masukkan Deskripsi : ")
 	deskripsi, _ = scanner.ReadString('\n')
@@ -101,12 +127,13 @@ func InputData(DataInput *Film) {
 
 	fmt.Print("Masukkan durasi : ")
 	durasiStr, _ := scanner.ReadString('\n')
-	durasiStr = strings.TrimSpace(strings.TrimSuffix(durasiStr, "\n"))
-	durasi, err := strconv.Atoi(durasiStr)
+	durasiStr = strings.TrimSpace(durasiStr)
+	newDurasi, err := strconv.Atoi(durasiStr)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
+	durasi = newDurasi
 
 	fmt.Print("Masukkan Gendre : ")
 	gendre, _ = scanner.ReadString('\n')
