@@ -70,13 +70,11 @@ func (film *Film) printFilm() {
 	fmt.Println("Durasi Film    : ", film.Durasi)
 	fmt.Println("Gendre Film    : ", film.Gendre)
 }
+
 func UpdateData(DataInput *[]Film) {
 	fmt.Println(&DataInput)
 	fmt.Println(*DataInput)
 
-<<<<<<< HEAD
-func InputData(DataInput *Film) {
-=======
 	var judul string
 	// scanner := bufio.NewReader(os.Stdin)
 	fmt.Print("Update Judul: ")
@@ -93,7 +91,6 @@ func InputData(DataInput *Film) {
 
 }
 func InputData(DataInput *[]Film) {
->>>>>>> 5615a72f8b392a70c785d112c84dcec7f3ec42b8
 	var judul string
 	var rating float64
 	var deskripsi string

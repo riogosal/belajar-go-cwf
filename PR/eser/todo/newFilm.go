@@ -200,21 +200,6 @@ func UpdateGenre(film *Film) {
 	}
 }
 
-// func load() {
-
-// }
-
-// func saveMovie() {
-// 	json, err := json.Marshal([]int{1, 2, 3})
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	// [1,2,3]
-// 	print(json)
-
-// 	// 2. Write to file (TODO how to do it?)
-// }
-
 func main() {
 	var myFilm Film
 	namaFile := "film.json"
@@ -242,6 +227,7 @@ func main() {
 		} else if inputMenu == "0" {
 
 			jsonData, err := os.ReadFile(namaFile)
+
 			if err != nil {
 				fmt.Println("Error:", err)
 				return
@@ -281,7 +267,6 @@ func main() {
 			}
 
 			fmt.Println(string(jsonData)) // kita tambahkan string untuk mengubah data byte ke string
-
 			// Simpan data json dengan nama file "data.json"
 
 			err = os.WriteFile(namaFile, jsonData, 0644)
