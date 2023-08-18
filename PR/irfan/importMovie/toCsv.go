@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -23,6 +24,7 @@ func FromCSV(csv string) Person {
 func main() {
 
 	var dataName Person
+	arrayDataPerson := []Person{}
 
 	for true {
 		fmt.Println("1. create data, 2. exit :")
@@ -48,14 +50,14 @@ func main() {
 			var password string
 			fmt.Scanln(&password)
 			dataName.Password = password
+
+			arrayDataPerson = append(arrayDataPerson, dataName)
 		} else {
 			break
 		}
 
 	}
 	// import data from csv
-
-	arrayDataPerson := []Person{dataName}
 
 	f, err := os.Create("dataFilm.csv")
 
@@ -67,6 +69,16 @@ func main() {
 	for _, p := range arrayDataPerson {
 
 		f.WriteString(p.ToCSV())
+
+		fmt.Println(FromCSV(p.ToCSV()))
 	}
 	fmt.Println("Program successfully write people.csv")
+
+	fileJson, err := json.Marshal(arrayDataPerson)
+
+	if err != nil {
+		panic("error " + err.Error())
+
+	}
+	os.WriteFile("fileJson.json", fileJson, 0644)
 }
