@@ -26,7 +26,7 @@ func main() {
 	var dataName Person
 	arrayDataPerson := []Person{}
 
-	for true {
+	for {
 		fmt.Println("1. create data, 2. exit :")
 		var choice string
 		fmt.Scanln(&choice)

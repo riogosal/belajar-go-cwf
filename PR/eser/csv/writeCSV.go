@@ -27,7 +27,8 @@ func FromCSV(csv string) Film {
 	return f
 }
 
-func InputDataFilm(film *Film) {
+func InputDataFilm() {
+	var film Film
 	scanner := bufio.NewReader(os.Stdin)
 
 	fmt.Print("Masukkan Judul: ")
@@ -108,7 +109,6 @@ func InputDataFilm(film *Film) {
 }
 
 func main() {
-	var myFilm Film
 	fileJson := "data_json.json"
 
 	for {
@@ -125,14 +125,14 @@ func main() {
 			fmt.Println("Menutup Aplikasi!")
 			break
 		} else if inputMenu == "1" {
-			InputDataFilm(&myFilm)
+			InputDataFilm()
 		} else if inputMenu == "2" {
 
 			jsonData, err := os.ReadFile(fileJson)
 
 			if err != nil {
-				fmt.Println("eh Error:", err)
-				return
+				fmt.Println("Belum ada file atau data")
+				continue
 			}
 			fmt.Println(string(jsonData))
 
