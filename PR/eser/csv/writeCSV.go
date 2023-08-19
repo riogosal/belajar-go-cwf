@@ -63,9 +63,14 @@ func InputDataFilm(film *Film) {
 	film.Durasi = newDurasi
 
 	fileCsv := "data_film.csv"
-	fileJson := "data_film.json"
+	fileJson := "data_json.json"
 
-	f, err := os.Create(fileCsv)
+	/* ref :
+	https://go.dev/src/os/example_test.go
+	 https://webdamn.com/how-to-read-csv-file-using-golang/
+	*/
+
+	f, err := os.OpenFile(fileCsv, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {
 		fmt.Println("Gagal membuka File:", err)
@@ -79,14 +84,18 @@ func InputDataFilm(film *Film) {
 		return
 	}
 
+	fmt.Println("Berhasil menyimpan data CSV dengan nama File :", fileCsv)
+
+	// ---- Simpan Data Ke json ----//
+
+	// Ubah data ke dalam bentuk Json
 	jsonData, err := json.Marshal(film)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
 
-	fmt.Println(string(jsonData)) // kita tambahkan string untuk mengubah data byte ke string
-	// Simpan data json dengan nama file "data.json"
+	fmt.Println(string(jsonData))
 
 	err = os.WriteFile(fileJson, jsonData, 0644)
 	if err != nil {
@@ -94,12 +103,13 @@ func InputDataFilm(film *Film) {
 		return
 	}
 
-	fmt.Println("Berhasil menympan data Json dengan nama File : ", fileJson)
+	fmt.Println("Berhasil menympan data Json dengan nama File :", fileJson)
+
 }
 
 func main() {
-
 	var myFilm Film
+	fileJson := "data_json.json"
 
 	for {
 		fmt.Println("\nMenu: ")
@@ -116,10 +126,29 @@ func main() {
 			break
 		} else if inputMenu == "1" {
 			InputDataFilm(&myFilm)
+		} else if inputMenu == "2" {
 
-		} else if inputMenu == "4" {
-			myFilm = Film{}
+			jsonData, err := os.ReadFile(fileJson)
+
+			if err != nil {
+				fmt.Println("eh Error:", err)
+				return
+			}
+			fmt.Println(string(jsonData))
+
+			var myDataJson *Film
+
+			err = json.Unmarshal(jsonData, &myDataJson)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+			fmt.Println("\nData Json Yang Telah di parsing :")
+			fmt.Println("Judul     :", myDataJson.Judul)
+			fmt.Println("Rating    :", myDataJson.Rating)
+			fmt.Println("Deskripsi :", myDataJson.Deskripsi)
+			fmt.Println("Studio    :", myDataJson.Studio)
+			fmt.Println("Durasi    :", myDataJson.Durasi)
 		}
 	}
-
 }
