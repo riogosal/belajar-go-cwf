@@ -38,7 +38,7 @@ func InputDataFilm() {
 	fmt.Print("Masukkan Rating: ")
 	ratingStr, _ := scanner.ReadString('\n')
 	ratingStr = strings.TrimSpace(ratingStr)
-	newRating, err := strconv.ParseFloat(ratingStr, 64)
+	newRating, err := strconv.ParseFloat(ratingStr, 1)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
