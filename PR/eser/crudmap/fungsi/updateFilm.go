@@ -9,17 +9,18 @@ import (
 )
 
 func UpdateFilm(koleksi_film map[string]model.Film) {
-	fmt.Println(koleksi_film)
 
 	fmt.Println("Data Film favorit kamu :")
-	for judul, film := range koleksi_film {
-		fmt.Println("Judul    :", judul)
-		fmt.Println("ID       :", film.ID)
-		fmt.Println("Deskripsi:", film.Deskripsi)
-		fmt.Println("Studio   :", film.Studio)
-		fmt.Println("Rating   :", film.Rating)
-		fmt.Println("Durasi   :", film.Durasi)
-		fmt.Println("------------------")
+	for _, film := range koleksi_film {
+
+		fmt.Println(film.Judul)
+		// fmt.Println("Judul    :", judul)
+		// fmt.Println("ID       :", film.ID)
+		// fmt.Println("Deskripsi:", film.Deskripsi)
+		// fmt.Println("Studio   :", film.Studio)
+		// fmt.Println("Rating   :", film.Rating)
+		// fmt.Println("Durasi   :", film.Durasi)
+		// fmt.Println("------------------")
 	}
 
 	user_input_text := bufio.NewScanner(os.Stdin)
@@ -52,10 +53,10 @@ func UpdateFilm(koleksi_film map[string]model.Film) {
 
 			switch userInput {
 			case "1":
-				fmt.Print("Masukkan Judul Baru: ")
+				fmt.Print("Masukkan Deskripsi Baru: ")
 				userInputText.Scan()
 				judulBaru := userInputText.Text()
-				film.Judul = judulBaru
+				film.Deskripsi = judulBaru
 				koleksi_film[judulFilm] = film
 				fmt.Println("Judul berhasil diubah:", judulBaru)
 				return
