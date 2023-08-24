@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"eser-http/model"
 	"io"
 	"net/http"
 	"os"
@@ -17,7 +18,7 @@ func ShowData(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	var films *[]Film
+	var films *[]model.Film
 	if err := json.NewDecoder(file).Decode(&films); err != nil && err != io.EOF {
 		http.Error(w, "Parsing Data Gagal!", http.StatusInternalServerError)
 		return

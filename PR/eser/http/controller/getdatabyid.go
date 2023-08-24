@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"eser-http/model"
 	"io"
 	"net/http"
 	"os"
@@ -23,7 +24,7 @@ func GetDataByID(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	var films []Film
+	var films []model.Film
 
 	if err := json.NewDecoder(file).Decode(&films); err != nil && err != io.EOF {
 		http.Error(w, "Parsing Data Gagal!", http.StatusInternalServerError)
@@ -31,7 +32,7 @@ func GetDataByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Cari film berdasarkan ID
-	var cariIDfilm *Film
+	var cariIDfilm *model.Film
 	for _, film := range films {
 		if strconv.Itoa(film.ID) == id {
 			cariIDfilm = &film

@@ -3,40 +3,41 @@ package router
 import (
 	"app-api-movie/model"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 )
 
 func JsonMovie(w http.ResponseWriter, r *http.Request) {
-	var films model.Movie
-	tampungData := map[string]model.Movie{}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
 	switch r.Method {
 	case "GET":
-		fmt.Fprintf(w, "response: %v", tampungData)
+		json.NewEncoder(w).Encode(model.Movies)
+		return
+		// fmt.Fprintf(w, "response: %v", model.Movies)
 	case "POST":
+		var film model.Movie
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			http.Error(w, "Bad request", http.StatusBadRequest)
 			return
 		}
-		err = json.Unmarshal(body, &films)
+		err = json.Unmarshal(body, &film)
 		if err != nil {
 			http.Error(w, "Bad request", http.StatusBadRequest)
 			return
 		}
 
-		fmt.Println(body)
+		// fmt.Println(body)
 		encoder := json.NewEncoder(w)
-		encoder.Encode(films)
+		encoder.Encode(film)
 
-		tampungData[films.Title] = films
-		fmt.Fprintf(w, "responses 1: %v", films)
-		fmt.Fprintf(w, "responses 2: %v", tampungData)
+		model.Movies = append(model.Movies, film)
+		json.NewEncoder(w).Encode(map[string]any{
+			"status": "OK",
+		})
+		return
 
 	}
 

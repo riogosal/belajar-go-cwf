@@ -1,8 +1,10 @@
 package routes
 
 import (
-	"belajar-go-cwf/PR/eser/http/controller"
+	"eser-http/controller"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -19,11 +21,13 @@ func SetupRoutes() {
 	http.Handle("/", r)
 
 	server := http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + os.Getenv("APP_PORT"),
 		Handler: r,
 	}
 
+	fmt.Println("Running server")
 	err := server.ListenAndServe()
+	fmt.Println("Saya tidak akan di print")
 	if err != nil {
 		panic(err)
 	}

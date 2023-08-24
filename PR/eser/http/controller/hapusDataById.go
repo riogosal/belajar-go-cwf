@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"eser-http/model"
 	"fmt"
 	"net/http"
 	"os"
@@ -11,6 +12,11 @@ import (
 )
 
 func HapusDataByID(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "DELETE" {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("Not Found"))
+		return
+	}
 	vars := mux.Vars(r)
 	id := vars["id"]
 
@@ -22,7 +28,7 @@ func HapusDataByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var films []Film
+	var films []model.Film
 	if err := json.Unmarshal(data, &films); err != nil {
 		http.Error(w, "Parsing Data Gagal!", http.StatusInternalServerError)
 		return

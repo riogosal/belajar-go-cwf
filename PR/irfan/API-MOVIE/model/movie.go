@@ -7,6 +7,9 @@ type Movie struct {
 	Year        int    `json:"year"`
 }
 
-func (m Movie) dataMovies() Movie {
-	return Movie{m.Id, m.Title, m.Description, m.Year}
-}
+// export const movies = []
+var Movies = []Movie{}
+
+// func (m Movie) dataMovies() Movie {
+// 	return Movie{m.Id, m.Title, m.Description, m.Year}
+// }

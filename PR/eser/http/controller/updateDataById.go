@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"eser-http/model"
 	"fmt"
 	"net/http"
 	"os"
@@ -21,7 +22,7 @@ func UpdateDataByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var films []Film
+	var films []model.Film
 	if err := json.Unmarshal(data, &films); err != nil {
 		http.Error(w, "Parsing Data Gagal!", http.StatusInternalServerError)
 		return
@@ -33,7 +34,7 @@ func UpdateDataByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	updateFilm := Film{}
+	updateFilm := model.Film{}
 	if err := json.NewDecoder(r.Body).Decode(&updateFilm); err != nil {
 		http.Error(w, "Gagal membaca data", http.StatusBadRequest)
 		return

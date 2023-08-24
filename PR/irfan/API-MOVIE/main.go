@@ -18,7 +18,9 @@ func main() {
 		Addr:    ":8000",
 		Handler: route,
 	}
-	fmt.Println("LOcalhost", server.Addr, "is ready")
+	fmt.Println("Localhost", server.Addr, "is ready")
+
+	// Load data to model.Movies
 	server.ListenAndServe()
 
 }

@@ -1,9 +1,12 @@
 package main
 
 import (
-	"belajar-go-cwf/PR/eser/http/routes"
+	"eser-http/routes"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	godotenv.Load()
 	routes.SetupRoutes()
 }
