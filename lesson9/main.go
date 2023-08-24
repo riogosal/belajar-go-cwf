@@ -12,6 +12,7 @@ func main() {
 	r.GET("/todos", todo.Get)
 	r.POST("/todos", todo.Create)
 	r.PATCH("/todos/:id", todo.Patch)
+	// r.DELETE("/todos/:id", todo.Delete) not implmemented
 
 	r.Run(":1235")
 }
