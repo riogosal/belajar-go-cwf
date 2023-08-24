@@ -33,22 +33,22 @@ func UpdateDataByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	updatedFilm := Film{}
-	if err := json.NewDecoder(r.Body).Decode(&updatedFilm); err != nil {
+	updateFilm := Film{}
+	if err := json.NewDecoder(r.Body).Decode(&updateFilm); err != nil {
 		http.Error(w, "Gagal membaca data", http.StatusBadRequest)
 		return
 	}
 
-	updated := false
+	boolUpdated := false
 	for i, film := range films {
 		if film.ID == updateID {
-			films[i] = updatedFilm
-			updated = true
+			films[i] = updateFilm
+			boolUpdated = true
 			break
 		}
 	}
 
-	if !updated {
+	if !boolUpdated {
 		http.Error(w, "Film tidak ditemukan", http.StatusNotFound)
 		return
 	}
