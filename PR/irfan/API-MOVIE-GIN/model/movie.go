@@ -7,8 +7,8 @@ type Tags struct {
 }
 
 type Movie struct {
-	Id          int    `json:"id"`
-	Title       string `json:"title"`
+	Id          int    `json:"id" binding:"required"`
+	Title       string `json:"title" binding:"required"`
 	Description string `json:"description"`
 	Year        int    `json:"year"`
 	Tags        `json:"tags"`

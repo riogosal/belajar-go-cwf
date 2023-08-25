@@ -2,17 +2,23 @@ package route
 
 import (
 	"api-movie-gin/model"
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 func CreateHandler(ctx *gin.Context) {
 	var dataMovie model.Movie
 
 	if err := ctx.ShouldBindJSON(&dataMovie); err != nil {
-		log.Fatal("CreateHandler error binding json: ", err)
+
+		for _, e := range err.(validator.ValidationErrors) {
+			errorMessage := fmt.Sprintf("Error on field %s, condition: %s", e.Field(), e.ActualTag())
+			ctx.JSON(http.StatusBadRequest, errorMessage)
+			return
+		}
 	}
 
 	model.Film = append(model.Film, dataMovie)
