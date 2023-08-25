@@ -21,6 +21,9 @@ func SearchFilmByGenre(c *gin.Context) {
 		}
 	}
 
+	if len(genreFilm) == 0 {
+		c.JSON(404, gin.H{"error": "Data tidak ditemukan"})
+		return
+	}
 	c.JSON(201, gin.H{"data": genreFilm})
-
 }

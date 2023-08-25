@@ -14,6 +14,14 @@ func AddFilm(c *gin.Context) {
 		return
 	}
 
+	// if err := c.ShouldBindJSON(&film); err != nil {
+	// 	c.AbortWithStatusJSON(http.StatusBadRequest,
+	// 		gin.H{
+	// 			"error":   "VALIDATEERR-1",
+	// 			"message": "Invalid inputs. Please check your inputs"})
+	// 	return
+	// }
+
 	model.Films = append(model.Films, film)
 
 	c.JSON(201, gin.H{"message": "Film berhasil ditambahkan", "data": film})

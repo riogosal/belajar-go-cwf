@@ -3,6 +3,7 @@ package model
 type Genre string
 
 type Film struct {
+	// ID        int     `json:"id" binding:"required,min=1"`
 	ID        int     `json:"id"`
 	Judul     string  `json:"judul"`
 	Deskripsi string  `json:"deskripsi"`
