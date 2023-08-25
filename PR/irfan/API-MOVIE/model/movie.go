@@ -7,6 +7,4 @@ type Movie struct {
 	Year        int    `json:"year"`
 }
 
-func (m Movie) dataMovies() Movie {
-	return Movie{m.Id, m.Title, m.Description, m.Year}
-}
+var Film []Movie

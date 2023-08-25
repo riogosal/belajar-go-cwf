@@ -1,18 +1,20 @@
 package main
 
 import (
-	"app-api-movie/model"
 	"app-api-movie/router"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	var film []model.Movie
-	fmt.Println(film)
-	route := http.NewServeMux()
+
+	route := mux.NewRouter()
 	route.HandleFunc("/getMovies", router.JsonMovie)
 	route.HandleFunc("/postMovies", router.JsonMovie)
+	route.HandleFunc("/putMovies/{id}", router.JsonMovie)
+	route.HandleFunc("/patchMovies/{id}", router.JsonMovie)
 
 	server := http.Server{
 		Addr:    ":8000",
