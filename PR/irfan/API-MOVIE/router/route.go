@@ -3,11 +3,7 @@ package router
 import (
 	"app-api-movie/model"
 	"encoding/json"
-<<<<<<< HEAD
 	"fmt"
-=======
-	"io"
->>>>>>> f233b3b3fa0a6dcfb26f02c1390a0fbb624732b9
 	"net/http"
 	"strconv"
 
@@ -15,46 +11,41 @@ import (
 )
 
 func JsonMovie(w http.ResponseWriter, r *http.Request) {
-<<<<<<< HEAD
 	var film model.Movie
-=======
->>>>>>> f233b3b3fa0a6dcfb26f02c1390a0fbb624732b9
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
 	switch r.Method {
 	case "GET":
-<<<<<<< HEAD
 		err := json.NewEncoder(w).Encode(model.Film)
 		if err != nil {
 			http.Error(w, "Bad request", http.StatusBadRequest)
 			return
 		}
 	case "POST":
-
 		err := json.NewDecoder(r.Body).Decode(&film)
-=======
+		if err != nil {
+			panic(err)
+		}
 		json.NewEncoder(w).Encode(model.Movies)
 		return
 		// fmt.Fprintf(w, "response: %v", model.Movies)
-	case "POST":
-		var film model.Movie
-		body, err := io.ReadAll(r.Body)
-		if err != nil {
-			http.Error(w, "Bad request", http.StatusBadRequest)
-			return
-		}
-		err = json.Unmarshal(body, &film)
->>>>>>> f233b3b3fa0a6dcfb26f02c1390a0fbb624732b9
-		if err != nil {
-			http.Error(w, "Bad request", http.StatusBadRequest)
-			return
-		}
+	// case "POST":
+	// 	var film model.Movie
+	// 	body, err := io.ReadAll(r.Body)
+	// 	if err != nil {
+	// 		http.Error(w, "Bad request", http.StatusBadRequest)
+	// 		return
+	// 	}
+	// 	err = json.Unmarshal(body, &film)
+	// 	if err != nil {
+	// 		http.Error(w, "Bad request", http.StatusBadRequest)
+	// 		return
+	// 	}
 
-<<<<<<< HEAD
-		model.Film = append(model.Film, film)
-		encoder := json.NewEncoder(w)
-		encoder.Encode(model.Film)
+	// 	model.Film = append(model.Film, film)
+	// 	encoder := json.NewEncoder(w)
+	// 	encoder.Encode(model.Film)
 
 	case "PUT":
 		vars := mux.Vars(r)
@@ -100,7 +91,6 @@ func JsonMovie(w http.ResponseWriter, r *http.Request) {
 				json.NewEncoder(w).Encode(model.Film)
 			}
 		}
-=======
 		// fmt.Println(body)
 		encoder := json.NewEncoder(w)
 		encoder.Encode(film)
@@ -110,7 +100,6 @@ func JsonMovie(w http.ResponseWriter, r *http.Request) {
 			"status": "OK",
 		})
 		return
->>>>>>> f233b3b3fa0a6dcfb26f02c1390a0fbb624732b9
 
 	}
 
