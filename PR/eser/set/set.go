@@ -1,3 +1,8 @@
+/** Revisi :
+1. User input data sambil cek data yang ada dalam array "data := []int{5, 10, 15, 20, 25, 30, 40, 100}
+2. Buat Folder Modul(Core) Fungsi, Hapus
+" */
+
 package main
 
 import (
@@ -5,10 +10,15 @@ import (
 	"strconv"
 )
 
+type Set struct {
+	data int
+}
+
 func main() {
-	data := []int{5, 10, 15, 20, 25, 30, 40, 100}
+	data := []int{10, 15, 20, 25, 30, 40, 100}
 
 	var inputData []int
+
 	for {
 		fmt.Print("Input Number, (e) exit : ")
 		var userInput string
@@ -23,7 +33,6 @@ func main() {
 			}
 			return
 		}
-
 		angka, err := strconv.Atoi(userInput)
 		if err != nil {
 			fmt.Println("Harap Masukkan Angka!")
@@ -34,7 +43,7 @@ func main() {
 }
 
 func updateData(data *[]int, inputData []int) {
-	for _, myData := range inputData {
+	for _, myData := range inputData { // 0(n^2)
 		found := false
 		for _, number := range *data {
 			if myData == number {

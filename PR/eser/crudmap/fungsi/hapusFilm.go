@@ -8,17 +8,17 @@ import (
 	"strconv"
 )
 
-func HapusFilm(koleksi_film *map[string]model.Film, id int) bool {
-	for judul, film := range *koleksi_film {
-		if film.ID == id {
-			delete(*koleksi_film, judul)
+func HapusFilm(koleksi_film map[string]model.Film, id_int int) bool {
+	for judul, film := range koleksi_film {
+		if film.ID == id_int {
+			delete(koleksi_film, judul)
 			return true
 		}
 	}
 	return false
 }
 
-func UserInputId(koleksi_film *map[string]model.Film) {
+func UserInputId(koleksi_film map[string]model.Film) {
 	user_input := bufio.NewScanner(os.Stdin)
 
 	fmt.Print("Masukkan ID yang ingin Di Hapus : ")

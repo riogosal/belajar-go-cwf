@@ -27,7 +27,7 @@ func SetupRoutes() {
 
 	fmt.Println("Running server")
 	err := server.ListenAndServe()
-	fmt.Println("Saya tidak akan di print")
+	// fmt.Println("Saya tidak akan di print")
 	if err != nil {
 		panic(err)
 	}

@@ -26,6 +26,7 @@ func updateFilm(film []Film, inputJudul string) {
 			newJudul := scanner.Text()
 			film[i].Judul = newJudul
 			fmt.Println("Judul telah diperbarui.")
+			fmt.Println(film)
 			return
 		}
 	}

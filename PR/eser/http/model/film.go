@@ -1,4 +1,4 @@
-package model
+package modells
 
 type FilmDTO struct {
 	ID        int     `json:"id"`
