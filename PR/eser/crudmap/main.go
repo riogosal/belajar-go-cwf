@@ -1,7 +1,6 @@
 package main
 
 import (
-	// "belajar-go-cwf/PR/eser/crudmap/cli"
 	"belajar-go-cwf/PR/eser/crudmap/cli"
 	"belajar-go-cwf/PR/eser/crudmap/fungsi"
 	"belajar-go-cwf/PR/eser/crudmap/model"
@@ -30,7 +29,7 @@ func main() {
 			fungsi.UpdateFilm(koleksi_film)
 		} else if pilihan_menu == cli.HapusFilm {
 			// fmt.Println("Hapus film")
-			fungsi.UserInputId(&koleksi_film)
+			fungsi.UserInputId(koleksi_film)
 		} else {
 			fmt.Println("Pilihan menu tidak di temukan")
 		}

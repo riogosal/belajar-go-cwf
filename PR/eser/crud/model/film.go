@@ -15,16 +15,7 @@ type Film struct {
 	Durasi    int
 }
 
-// fmt.Print("Masukkan Rating Baru: ")
-// userInputText.Scan()
-// ratingBaruText := userInputText.Text()
-// ratingBaru, err := strconv.ParseFloat(ratingBaruText, 64)
-
 func (f Film) Tampilkan() string {
-	// ratingFloat, err := strconv.FormatFloat(f.Rating, 'g', 5, 64)
-	// if err != nil {
-	// 	panic(err)
-	// }
 	return fmt.Sprintf(
 		"ID	  : %d\nJudul     : %s\nDeskripsi : %s\nStudio    : %s\nRating    : %f\nDurasi    : %d\n",
 		f.ID,
@@ -32,7 +23,6 @@ func (f Film) Tampilkan() string {
 		f.Deskripsi,
 		f.Studio,
 		f.Rating,
-		// ratingFloat,
 		f.Durasi,
 	)
 }

@@ -85,7 +85,7 @@ func InputDataFilm(film *Film) {
 
 func UpdateNewFilm(film *Film) {
 	if film.Judul != "" {
-		scanner := bufio.NewReader(os.Stdin)
+		scanner := bufio.NewScanner(os.Stdin)
 		for {
 			fmt.Println("Silahkan pilih menu, 1. Update Judul, 2. Update Rating 3.Update Deskripsi 4. Update Studio, 5.Update Durasi, 6.Update Genre, (e) exit")
 			var updateData string
@@ -93,14 +93,14 @@ func UpdateNewFilm(film *Film) {
 			switch updateData {
 			case "1":
 				fmt.Print("Masukkan Judul Baru: ")
-				film.Judul, _ = scanner.ReadString('\n')
+				film.Judul, _ = scanner.Text()
 				film.Judul = strings.TrimSpace(film.Judul)
 				fmt.Println("Judul berhasil diubah:", film.Judul)
 				return
 			case "2":
 				fmt.Print("Masukkan Rating: ")
-				ratingStr, _ := scanner.ReadString('\n')
-				ratingStr = strings.TrimSpace(ratingStr) // menghilangkan karakter '\n'
+				ratingStr, _ := scanner.Text()
+				ratingStr = strings.TrimSpace(ratingStr) // menghilangkan karakter
 				newRating, err := strconv.ParseFloat(ratingStr, 64)
 				if err != nil {
 					fmt.Println("Error:", err)
@@ -111,19 +111,19 @@ func UpdateNewFilm(film *Film) {
 				return
 			case "3":
 				fmt.Print("Masukkan Deskripsi : ")
-				film.Deskripsi, _ = scanner.ReadString('\n')
+				film.Deskripsi, _ = scanner.Text()
 				film.Deskripsi = strings.TrimSpace(film.Deskripsi)
 				fmt.Println("Deskripsi berhasil diubah:", film.Deskripsi)
 				return
 			case "4":
 				fmt.Print("Masukkan Studio : ")
-				film.Studio, _ = scanner.ReadString('\n')
+				film.Studio, _ = scanner.Text()
 				film.Studio = strings.TrimSpace(film.Studio)
 				fmt.Println("Studio berhasil diubah:", film.Studio)
 				return
 			case "5":
 				fmt.Print("Masukkan durasi : ")
-				durasiStr, _ := scanner.ReadString('\n')
+				durasiStr, _ := scanner.Text()
 				durasiStr = strings.TrimSpace(durasiStr)
 				newDurasi, err := strconv.Atoi(durasiStr)
 				if err != nil {

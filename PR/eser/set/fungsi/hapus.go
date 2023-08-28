@@ -1,0 +1,5 @@
+package fungsi
+
+func hapusData() {
+
+}
