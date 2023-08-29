@@ -12,7 +12,7 @@ import (
 func CreateHandler(ctx *gin.Context) {
 	var dataMovie model.Movie
 
-	if err := ctx.ShouldBindJSON(&dataMovie); err != nil {
+	if err := ctx.BindJSON(&dataMovie); err != nil {
 
 		for _, e := range err.(validator.ValidationErrors) {
 			errorMessage := fmt.Sprintf("Error on field %s, condition: %s", e.Field(), e.ActualTag())
