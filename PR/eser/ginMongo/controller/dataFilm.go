@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func DataFilm(c *gin.Context) {
+func GetDataFilm(c *gin.Context) {
 
 	mongo_client, err := koneksi.InitializeMongo()
 	if err != nil {

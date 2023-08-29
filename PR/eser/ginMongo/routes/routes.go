@@ -10,7 +10,7 @@ import (
 
 func SetupRoutes() {
 	router := gin.Default()
-	router.GET("/film", controller.DataFilm)
+	router.GET("/film", controller.GetDataFilm)
 	router.GET("/getid-film/:id", controller.SearchFilmById)
 	router.POST("/add-film", controller.AddFilm)
 	router.DELETE("/hapus-film/:id", controller.HapusDataByID)

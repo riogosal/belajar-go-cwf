@@ -13,4 +13,5 @@ type Film struct {
 	Genres    []Genre `bson:"genres"`
 }
 
-var Films []Film = []Film{}
+// var Films []Film = []Film{}
+var Films []Film

@@ -12,7 +12,6 @@ import (
 
 var client *mongo.Client
 
-// var Ctx = context.TODO()
 var Ctx = context.Background()
 
 func mongoURI() string {

@@ -4,6 +4,7 @@ import (
 	"app-api-movie/model"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 
@@ -24,28 +25,25 @@ func JsonMovie(w http.ResponseWriter, r *http.Request) {
 		}
 	case "POST":
 		err := json.NewDecoder(r.Body).Decode(&film)
-		if err != nil {
-			panic(err)
-		}
 		json.NewEncoder(w).Encode(model.Movies)
 		return
 		// fmt.Fprintf(w, "response: %v", model.Movies)
-	// case "POST":
-	// 	var film model.Movie
-	// 	body, err := io.ReadAll(r.Body)
-	// 	if err != nil {
-	// 		http.Error(w, "Bad request", http.StatusBadRequest)
-	// 		return
-	// 	}
-	// 	err = json.Unmarshal(body, &film)
-	// 	if err != nil {
-	// 		http.Error(w, "Bad request", http.StatusBadRequest)
-	// 		return
-	// 	}
+	case "POST":
+		var film model.Movie
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Bad request", http.StatusBadRequest)
+			return
+		}
+		err = json.Unmarshal(body, &film)
+		if err != nil {
+			http.Error(w, "Bad request", http.StatusBadRequest)
+			return
+		}
 
-	// 	model.Film = append(model.Film, film)
-	// 	encoder := json.NewEncoder(w)
-	// 	encoder.Encode(model.Film)
+		model.Film = append(model.Film, film)
+		encoder := json.NewEncoder(w)
+		encoder.Encode(model.Film)
 
 	case "PUT":
 		vars := mux.Vars(r)
