@@ -27,7 +27,7 @@ func InputDataFilm() model.Movie {
 	films_input.Scan()
 	desc := films_input.Text()
 
-	fmt.Print("Tahun: ")
+	fmt.Print("Tahun: ") 
 	films_input.Scan()
 	data_film_tahun := films_input.Text()
 	tahun_int, err := strconv.Atoi(data_film_tahun)
