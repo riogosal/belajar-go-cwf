@@ -6,15 +6,15 @@
 // 	Name  string
 // 	Price float32
 // }
-
+// //
 // type Drink struct {
 // 	Name  string
 // 	Price float32
 // }
 
-// // type printer interface {
-// // 	printInfo()
-// // }
+// type printer interface {
+// 	printInfo()
+// }
 
 // func (d Drink) printInfo() {
 // 	fmt.Printf("Drink : %s  Price : %.2f\n", d.Name, d.Price)
