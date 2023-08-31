@@ -3,7 +3,6 @@ package main
 import (
 	"app-api-natulius/models"
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -44,8 +43,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println(nautilus)
 
 	nautilus.CetakIkan()
 }

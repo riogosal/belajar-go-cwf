@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -71,14 +70,16 @@ type Certificates struct {
 }
 
 func (r RawMaterials) CetakIkan() {
-	t := time.UnixMilli(int64(r.Created_At))
-	fmt.Println("Kode Ilc :", r.ILC)
-	fmt.Println("Nama Ikan :", r.Species.Name)
-	fmt.Println("Type Ikan :", r.Type.Name)
-	fmt.Println("Kode Ikan : ", r.Species.Code)
-	fmt.Println("Tanggal Ikan Masuk :", t)
-	fmt.Println("jumlah ikan masuk ")
-	fmt.Println("B : ", r.Grouped_Contents["B"])
-	fmt.Println("C : ", r.Grouped_Contents["C"])
-
+	GradeWeightAndCounts := make(map[string]GroupedContents)
+	for _, m := range r.Contents {
+		if GradeWeightAndCounts[m.Grade].Count == 0 && GradeWeightAndCounts[m.Grade].Weight == 0 {
+			GradeWeightAndCounts[m.Grade] = GroupedContents{Weight: m.Weight, Count: m.Count}
+		} else {
+			GradeWeightAndCounts[m.Grade] = GroupedContents{
+				Weight: GradeWeightAndCounts[m.Grade].Weight + m.Weight,
+				Count:  GradeWeightAndCounts[m.Grade].Count + m.Count,
+			}
+		}
+	}
+	fmt.Println(GradeWeightAndCounts)
 }
