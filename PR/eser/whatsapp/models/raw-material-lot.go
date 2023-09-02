@@ -66,7 +66,7 @@ func salam() string {
 	hour := now.Hour()
 
 	if hour >= 6 && hour <= 9 {
-		return "Selamat pagi ceria di awal hari,Semangat dan semangat, jangan pernah kau kalah, Saat pekerjaan berat, jangan lupa senyum manis, Sebelum kita berpisah, pinjam dulu seratus."
+		return "Selamat pagi"
 	} else if hour >= 10 && hour <= 13 {
 		return "Selamat siang"
 		// waktu makan yang berwarna, Selera terbuka, nikmati makanan dengan perasaan, Setelah santap siang, kembali bekerja dengan giat, Sebelum lanjut kerja, pinjam dulu seratus."
