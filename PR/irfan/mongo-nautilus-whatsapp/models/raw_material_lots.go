@@ -69,30 +69,6 @@ type Certificates struct {
 	Number     string `json:"number" bson:"number"`
 	Updated_at int    `json:"updated_at" bson:"updated_at"`
 }
-type GradeWeightAndCounts map[string]*GroupedContents
-
-func (r RawMaterials) CetakIkan() {
-	GradeWeightAndCounts := make(GradeWeightAndCounts)
-	for _, m := range r.Contents {
-		if GradeWeightAndCounts[m.Grade] == nil {
-			GradeWeightAndCounts[m.Grade] = &GroupedContents{Weight: m.Weight, Count: m.Count}
-		} else {
-			// GradeWeightAndCounts[m.Grade] = GroupedContents{
-			// 	Weight: GradeWeightAndCounts[m.Grade].Weight + m.Weight,
-			// 	Count:  GradeWeightAndCounts[m.Grade].Count + m.Count,
-			// }
-
-			// x := GradeWeightAndCounts[m.Grade]
-			// x.Count++
-			// x.Weight += m.Weight
-			// GradeWeightAndCounts[m.Grade] = x
-			GradeWeightAndCounts[m.Grade].Weight += m.Weight
-			GradeWeightAndCounts[m.Grade].Count++
-
-		}
-	}
-	fmt.Println(GradeWeightAndCounts)
-}
 
 func (r *RawMaterials) CetakStrRwaMatetirialLot() string {
 	DataGradeWeightAndCounts := ""
