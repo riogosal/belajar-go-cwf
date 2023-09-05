@@ -2,7 +2,8 @@ package main
 
 import (
 	"app-api-natulius/connection"
-	"app-api-natulius/services"
+	"app-api-natulius/domain"
+	"app-api-natulius/repositories"
 	"context"
 	"fmt"
 	"log"
@@ -13,7 +14,7 @@ import (
 )
 
 var (
-	us          services.RawMaterialsService
+	rs          domain.RawMaterialsService
 	ctx         context.Context
 	rawMaterial *mongo.Collection
 	mongoclient *mongo.Client
@@ -25,7 +26,7 @@ func init() {
 
 	mongoclient = connection.Connecting(ctx, mongoclient, err)
 	rawMaterial = mongoclient.Database("natulius").Collection("raw_material_lots")
-	us = services.NewRawMaterialService(rawMaterial, ctx)
+	rs = repositories.NewRawMaterialService(rawMaterial, ctx)
 }
 
 func main() {
@@ -38,12 +39,11 @@ func main() {
 		log.Fatal(err)
 	}
 	id := "6417b194954fea8407a5aadc"
-	nautilus, err := us.GetData(id)
+	nautilus, err := rs.GetData(id)
 	if err != nil {
 		panic(err)
 	}
 
-	// nautilus.CetakIkan()
 	fmt.Println(nautilus.CetakStrRwaMatetirialLot())
 
 }
