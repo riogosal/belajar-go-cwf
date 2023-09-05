@@ -21,18 +21,23 @@ var (
 )
 
 func init() {
-	ctx = context.TODO()
+	fmt.Println("Data Laporan Receiving Tgl : ", time.Now())
+}
+
+func main() {
+	ctx = context.Background()
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
 
 	mongoclient, err = mongodb.ConnectToMongoDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	/* Raw Material Lot */
 	rawMaterial := mongoclient.Database("nautilus").Collection("raw_material_lots")
 	r = repository.NewRawMaterialLot(rawMaterial, ctx)
-}
 
-func main() {
 	c, _ := context.WithTimeout(ctx, 10*time.Second)
 	defer mongoclient.Disconnect(c)
 	err = mongoclient.Ping(c, readpref.Primary())
@@ -40,11 +45,41 @@ func main() {
 		log.Fatal(err)
 	}
 
-	id := "641cfe6c88032b19610a6499" //  tolong kenapa ini eroro terus
-	mydata, err := r.GetData(id)
+	// id := "64151aff954fea8407a5aa83"
+	// mydata, err := r.GetData(ctx, id)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println(mydata.CetakStrRawmaterialLot())
+
+	//============== Menampilkan data berdasarkan range Tanggal==================//
+
+	// utcTime := time.Now().UTC()
+	mksTime, err := time.LoadLocation("Asia/Makassar")
+	if err != nil {
+		fmt.Println("Gagal memuat zona waktu:", err)
+		return
+	}
+
+	/*
+		localTime := utcTime.In(mksTime)
+		startOfDay := time.Date(localTime.Year(), localTime.Month(), localTime.Day(), 0, 0, 0, 0, mksTime)
+		endOfDay := time.Date(localTime.Year(), localTime.Month(), localTime.Day(), 23, 59, 59, 999999999, mksTime)
+	*/
+
+	// Input tanggal manual, karena dalam database tidak ada tanggal hari ini.
+	startOfDay := time.Date(2023, time.March, 23, 0, 0, 0, 0, mksTime)
+	endOfDay := time.Date(2023, time.March, 23, 23, 59, 59, 999999999, mksTime)
+
+	startOfDayInt := startOfDay.UnixMilli()
+	endOfDayInt := endOfDay.UnixMilli()
+
+	resultData, err := r.GetDataByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(mydata.CetakStrRawmaterialLot())
+	for _, data := range resultData {
+		fmt.Println(data.CetakDataByDate())
+	}
 }
