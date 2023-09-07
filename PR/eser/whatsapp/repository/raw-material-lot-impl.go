@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"whatsapp-nautilus/constants"
 	"whatsapp-nautilus/domain"
 	"whatsapp-nautilus/models"
 
@@ -11,12 +12,14 @@ import (
 )
 
 type RawMaterialLotRepositoryImpl struct {
-	rawmateriallotcollection *mongo.Collection
+	db   *mongo.Database
+	coll *mongo.Collection
 }
 
-func NewRawMaterialLot(rawmateriallotcollection *mongo.Collection, ctx context.Context) domain.RawMaterialLotRepository {
+func NewRawMaterialLot(db *mongo.Database) domain.RawMaterialLotRepository {
 	return &RawMaterialLotRepositoryImpl{
-		rawmateriallotcollection: rawmateriallotcollection,
+		db:   db,
+		coll: db.Collection(string(constants.RawMaterialLotsCollectionName)),
 	}
 }
 
@@ -26,7 +29,7 @@ func (r *RawMaterialLotRepositoryImpl) GetData(ctx context.Context, id string) (
 		panic(err)
 	}
 	var rawmaterial models.RawMaterial
-	err = r.rawmateriallotcollection.FindOne(ctx, bson.M{"_id": dataId}).Decode(&rawmaterial)
+	err = r.coll.FindOne(ctx, bson.M{"_id": dataId}).Decode(&rawmaterial)
 	return &rawmaterial, err
 }
 
@@ -37,7 +40,7 @@ func (r *RawMaterialLotRepositoryImpl) GetDataByDate(ctx context.Context, startO
 			"$lte": endOfDayInt,
 		},
 	}
-	cursor, err := r.rawmateriallotcollection.Find(ctx, filter)
+	cursor, err := r.coll.Find(ctx, filter)
 	if err != nil {
 		return nil, err
 	}

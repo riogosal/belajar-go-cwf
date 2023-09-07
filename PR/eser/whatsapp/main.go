@@ -15,6 +15,8 @@ import (
 
 var (
 	r           domain.RawMaterialLotRepository
+	rf          domain.RefinedmaterialRepository
+	plc         domain.ProductLogContainersRepository
 	ctx         context.Context
 	mongoclient *mongo.Client
 	err         error
@@ -25,6 +27,7 @@ func init() {
 }
 
 func main() {
+
 	ctx = context.Background()
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -35,8 +38,10 @@ func main() {
 	}
 
 	/* Raw Material Lot */
-	rawMaterial := mongoclient.Database("nautilus").Collection("raw_material_lots")
-	r = repository.NewRawMaterialLot(rawMaterial, ctx)
+	db := mongoclient.Database("nautilus")
+	r = repository.NewRawMaterialLot(db)
+	rf = repository.NewRefinedMaterial(db)
+	plc = repository.NewProductLogContainers(db)
 
 	c, _ := context.WithTimeout(ctx, 10*time.Second)
 	defer mongoclient.Disconnect(c)
@@ -54,25 +59,21 @@ func main() {
 
 	//============== Menampilkan data berdasarkan range Tanggal==================//
 
-	// utcTime := time.Now().UTC()
-	mksTime, err := time.LoadLocation("Asia/Makassar")
+	inputTanggal := "2023-04-15"
+
+	t, err := time.Parse("2006-01-02", inputTanggal)
 	if err != nil {
-		fmt.Println("Gagal memuat zona waktu:", err)
+		fmt.Println("Parsing Tanggal gagal", err)
 		return
 	}
 
-	/*
-		localTime := utcTime.In(mksTime)
-		startOfDay := time.Date(localTime.Year(), localTime.Month(), localTime.Day(), 0, 0, 0, 0, mksTime)
-		endOfDay := time.Date(localTime.Year(), localTime.Month(), localTime.Day(), 23, 59, 59, 999999999, mksTime)
-	*/
+	startOfDayInt := t.UnixNano() / int64(time.Millisecond)
 
-	// Input tanggal manual, karena dalam database tidak ada tanggal hari ini.
-	startOfDay := time.Date(2023, time.March, 23, 0, 0, 0, 0, mksTime)
-	endOfDay := time.Date(2023, time.March, 23, 23, 59, 59, 999999999, mksTime)
+	endOfDay := time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 999999999, t.Location())
+	endOfDayInt := endOfDay.UnixNano() / int64(time.Millisecond)
 
-	startOfDayInt := startOfDay.UnixMilli()
-	endOfDayInt := endOfDay.UnixMilli()
+	fmt.Println("Start of Day (millis):", startOfDayInt)
+	fmt.Println("End of Day (millis):", endOfDayInt)
 
 	resultData, err := r.GetDataByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {
@@ -81,5 +82,26 @@ func main() {
 
 	for _, data := range resultData {
 		fmt.Println(data.CetakDataByDate())
+	}
+
+	//==============================================//
+	resultRefined, err := rf.GetDataRefinedByDate(ctx, startOfDayInt, endOfDayInt)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, dataRefined := range resultRefined {
+		fmt.Println(dataRefined.PrintRefinedMaterialDataByDate())
+	}
+
+	//==================================================//
+
+	resultProductLogContainer, err := plc.GetDataProductLogByDate(ctx, startOfDayInt, endOfDayInt)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, dataProductLogContainer := range resultProductLogContainer {
+		fmt.Println(dataProductLogContainer.PrintProductLogContainerDataByDate())
 	}
 }

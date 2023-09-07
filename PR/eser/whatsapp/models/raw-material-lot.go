@@ -120,15 +120,32 @@ func (r RawMaterial) CetakStrRawmaterialLot() string {
 
 func (r RawMaterial) CetakDataByDate() string {
 	result := ""
-
-	if r.Type.Whole { // ini true
-		for k, v := range r.GroupedContents {
-			result += fmt.Sprintf("Grade : %s, Berat : %.2f, Jumlah : %d\n", k, v.Weight, v.Count)
-		}
-
+	for k, v := range r.GroupedContents {
+		result += fmt.Sprintf(`
+%s   %d ekor | %.2f KG`, k, v.Count, v.Weight)
 	}
 
-	return fmt.Sprintf(
-		"Ilc : %s\nTanggal : %s\nSuplayer : %s \n%s", r.Ilc, Waktu(r.CreatedAt), r.Supplier.Name, result,
-	)
+	if r.Type.Code == "GG" {
+		return fmt.Sprintf(`
+-----------------------------
+	%s
+	%s (%s %s) 
+-----------------------------
+%s 
+
+Tot %d Loin | %2.f Kg
+	`, r.Ilc, r.Supplier.Name, r.Species.Code, r.Type.Code, result, r.TotalCount, r.TotalWeight)
+	} else {
+		return fmt.Sprintf(`
+-----------------------------
+	%s
+	%s (%s %s) 
+-----------------------------
+Tot %d Loin | %2.f Kg
+			`, r.Ilc, r.Supplier.Name, r.Species.Code, r.Type.Code, r.TotalCount, r.TotalWeight)
+	}
 }
+
+// return fmt.Sprintf(
+// 	"Kode Ilc : %s\nTanggal  : %s\nNama Suplayer : %s \n%s", r.Ilc, Waktu(r.CreatedAt), r.Supplier.Name, result,
+// )
