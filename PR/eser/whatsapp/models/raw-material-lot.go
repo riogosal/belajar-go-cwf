@@ -125,7 +125,7 @@ func (r RawMaterial) CetakDataByDate() string {
 %s   %d ekor | %.2f KG`, k, v.Count, v.Weight)
 	}
 
-	if r.Type.Code == "GG" {
+	if r.Type.Whole {
 		return fmt.Sprintf(`
 -----------------------------
 	%s

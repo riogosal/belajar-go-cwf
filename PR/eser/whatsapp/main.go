@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 	"whatsapp-nautilus/domain"
+	"whatsapp-nautilus/models"
 	"whatsapp-nautilus/mongodb"
 	"whatsapp-nautilus/repository"
 
@@ -17,16 +18,18 @@ var (
 	r           domain.RawMaterialLotRepository
 	rf          domain.RefinedmaterialRepository
 	plc         domain.ProductLogContainersRepository
+	p           domain.PackingRepository
 	ctx         context.Context
 	mongoclient *mongo.Client
 	err         error
 )
 
 func init() {
-	fmt.Println("Data Laporan Receiving Tgl : ", time.Now())
+	fmt.Println("Selamat Malam Chen Woo Fishery (Makassar) ini rangkmuman processing tanggal 2023-06-23")
 }
 
 func main() {
+	defer fmt.Println("Sekedar informasinya untuk hari ini, terima kasih")
 
 	ctx = context.Background()
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -42,6 +45,7 @@ func main() {
 	r = repository.NewRawMaterialLot(db)
 	rf = repository.NewRefinedMaterial(db)
 	plc = repository.NewProductLogContainers(db)
+	p = repository.NewPacking(db)
 
 	c, _ := context.WithTimeout(ctx, 10*time.Second)
 	defer mongoclient.Disconnect(c)
@@ -59,7 +63,7 @@ func main() {
 
 	//============== Menampilkan data berdasarkan range Tanggal==================//
 
-	inputTanggal := "2023-04-15"
+	inputTanggal := "2023-06-23"
 
 	t, err := time.Parse("2006-01-02", inputTanggal)
 	if err != nil {
@@ -84,7 +88,7 @@ func main() {
 		fmt.Println(data.CetakDataByDate())
 	}
 
-	//==============================================//
+	// //==============================================//
 	resultRefined, err := rf.GetDataRefinedByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {
 		log.Fatal(err)
@@ -102,6 +106,15 @@ func main() {
 	}
 
 	for _, dataProductLogContainer := range resultProductLogContainer {
-		fmt.Println(dataProductLogContainer.PrintProductLogContainerDataByDate())
+		// fmt.Println(dataProductLogContainer.PrintProductLogContainerDataByDate())
+		dataProductLogContainer.PrintProductLogContainerDataByDate()
 	}
+
+	// ======================================================== //
+	resultPacking, err := p.GetDataPackingByDate(ctx, startOfDayInt, endOfDayInt)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	models.PrintPackingDataByDate(resultPacking)
 }

@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -87,58 +89,61 @@ type ProductLogContainer struct {
 
 var ProductLogResult []*ProductLogContainer
 
-func (plc *ProductLogContainer) PrintProductLogContainerDataByDate() map[string]Ungraded {
+// map[string]map[string]Ungraded
+func (plc *ProductLogContainer) PrintProductLogContainerDataByDate() {
+	dataGroup := make(map[string]map[string]Ungraded)
 
-	dataUngrade := make(map[string]Ungraded)
+	for _, content := range plc.Contents {
+		productName := content.Product.Name
+		grade := content.Grade
 
-	for j, _ := range plc.GroupedContents {
-		for k, v := range plc.GroupedContents[j] {
+		if dataGroup[productName] == nil {
+			dataGroup[productName] = make(map[string]Ungraded)
+		}
 
-			if dataUngrade[v.Name].Weight == 0 {
-				dataUngrade[v.Name] = Ungraded{
-					Weight: v.Weight,
-					Count:  v.Count,
-					Name:   k,
-				}
-			} else {
-				dataUngrade[k] = Ungraded{
-					Weight: dataUngrade[k].Weight + v.Weight,
-					Count:  dataUngrade[k].Count + v.Count,
-					Name:   v.Name,
-				}
+		if _, ok := dataGroup[productName][grade]; !ok {
+			dataGroup[productName][grade] = Ungraded{
+				Weight: 0.0,
+				Count:  0,
+				Name:   productName,
+				Code:   content.Product.Code,
 			}
 		}
+
+		// Hitung total weight dan count
+		myData := dataGroup[productName][grade]
+		myData.Weight += content.Weight
+		myData.Count += int64(content.Count)
+
+		// simpan lagi data ke dalam map
+		dataGroup[productName][grade] = myData
 	}
-	return dataUngrade
-	// fmt.Println(dataUngrade)
+	// fmt.Println(dataGroup)
+	// mergedData := make(map[string]Ungraded)
+
+	// for _, productName := range dataGroup {
+	// 	fmt.Println("Nama Produk:", productName)
+	// 	fmt.Println("Nama Produk:", dataGroup)
+	// }
+	// fmt.Println(dataGroup)
+	PrintTotalCountAndWeight(dataGroup)
+	// return dataGroup
 }
 
-// func (plc *ProductLogContainer) PrintProductLogContainerDataByDate() string {
-// 	result := ""
+func PrintTotalCountAndWeight(dataGroup map[string]map[string]Ungraded) {
+	for productName, gradeMap := range dataGroup {
+		fmt.Println(productName)
 
-// 	for key, v := range plc.GroupedContents {
-// 		result += fmt.Sprintf("            %s            \n", key)
-// 		result += "---------------------------\n"
+		var grades []string
+		for grade := range gradeMap {
+			grades = append(grades, grade)
+		}
 
-// 		for _, ungraded := range v {
-// 			result += fmt.Sprintf("%s\n", ungraded.Name)
-// 			result += fmt.Sprintf("%s   %d pcs | %.2f kg\n", ungraded.Code, ungraded.Count, ungraded.Weight)
-// 		}
+		for _, grade := range grades {
+			ungraded := gradeMap[grade]
+			fmt.Printf("%s %d pcs | %.2f kg\n", grade, ungraded.Count, ungraded.Weight)
+		}
 
-// 		result += "\n"
-// 	}
-
-// 	var totalPcs int64 = 0
-// 	totalWeight := 0.0
-
-// 	for _, v := range plc.GroupedContents {
-// 		for _, ungraded := range v {
-// 			totalPcs += ungraded.Count
-// 			totalWeight += ungraded.Weight
-// 		}
-// 	}
-
-// 	result += fmt.Sprintf("Total: %d pcs | %.3f kg\n", totalPcs, totalWeight)
-
-// 	return result
-// }
+		fmt.Println()
+	}
+}
