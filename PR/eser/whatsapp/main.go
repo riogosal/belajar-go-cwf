@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 	"whatsapp-nautilus/domain"
+	"whatsapp-nautilus/models"
 	"whatsapp-nautilus/mongodb"
 	"whatsapp-nautilus/repository"
 
@@ -15,24 +16,37 @@ import (
 
 var (
 	r           domain.RawMaterialLotRepository
+	rf          domain.RefinedmaterialRepository
+	plc         domain.ProductLogContainersRepository
+	p           domain.PackingRepository
 	ctx         context.Context
 	mongoclient *mongo.Client
 	err         error
 )
 
 func init() {
-	ctx = context.TODO()
+	fmt.Println("Selamat Malam Chen Woo Fishery (Makassar) ini rangkmuman processing tanggal 2023-06-23")
+}
+
+func main() {
+	defer fmt.Println("\nSekedar informasinya untuk hari ini, terima kasih")
+
+	ctx = context.Background()
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
 
 	mongoclient, err = mongodb.ConnectToMongoDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	rawMaterial := mongoclient.Database("nautilus").Collection("raw_material_lots")
-	r = repository.NewRawMaterialLot(rawMaterial, ctx)
-}
+	/* Raw Material Lot */
+	db := mongoclient.Database("nautilus")
+	r = repository.NewRawMaterialLot(db)
+	rf = repository.NewRefinedMaterial(db)
+	plc = repository.NewProductLogContainers(db)
+	p = repository.NewPacking(db)
 
-func main() {
 	c, _ := context.WithTimeout(ctx, 10*time.Second)
 	defer mongoclient.Disconnect(c)
 	err = mongoclient.Ping(c, readpref.Primary())
@@ -40,11 +54,67 @@ func main() {
 		log.Fatal(err)
 	}
 
-	id := "641cfe6c88032b19610a6499" //  tolong kenapa ini eroro terus
-	mydata, err := r.GetData(id)
+	// id := "64151aff954fea8407a5aa83"
+	// mydata, err := r.GetData(ctx, id)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println(mydata.CetakStrRawmaterialLot())
+
+	//============== Menampilkan data berdasarkan range Tanggal==================//
+
+	// inputTanggal := "2023-04-15"
+	inputTanggal := "2023-06-26"
+
+	t, err := time.Parse("2006-01-02", inputTanggal)
+	if err != nil {
+		fmt.Println("Parsing Tanggal gagal", err)
+		return
+	}
+
+	startOfDayInt := t.UnixNano() / int64(time.Millisecond)
+
+	endOfDay := time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 999999999, t.Location())
+	endOfDayInt := endOfDay.UnixNano() / int64(time.Millisecond)
+
+	// fmt.Println("Start of Day (millis):", startOfDayInt)
+	// fmt.Println("End of Day (millis):", endOfDayInt)
+
+	resultData, err := r.GetDataByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(mydata.CetakStrRawmaterialLot())
+	for _, data := range resultData {
+		fmt.Println(data.CetakDataByDate())
+	}
+
+	//==============================================//
+
+	resultRefined, err := rf.GetDataRefinedByDate(ctx, startOfDayInt, endOfDayInt)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, dataRefined := range resultRefined {
+		fmt.Println(dataRefined.PrintRefinedMaterialDataByDate())
+	}
+
+	//==================================================//
+
+	resultPLC, err := plc.GetDataProductLogByDate(ctx, startOfDayInt, endOfDayInt)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	models.PrintProductLogContainerDataByDate(resultPLC)
+
+	// ======================================================== //
+
+	resultPacking, err := p.GetDataPackingByDate(ctx, startOfDayInt, endOfDayInt)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	models.PrintPackingDataByDate(resultPacking)
 }

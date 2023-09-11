@@ -54,14 +54,16 @@ type RawMaterial struct {
 	Supplier        Supplier                  `json:"supplier" bson:"supplier"`
 	TotalWeight     float64                   `json:"total_weight" bson:"total_weight"`
 	TotalCount      int64                     `json:"total_count" bson:"total_count"`
-	CreatedAt       time.Time                 `json:"created_at" bson:"created_at"`
-	UpdatedAt       time.Time                 `json:"updated_at" bson:"updated_at"`
+	CreatedAt       int64                     `json:"created_at" bson:"created_at"`
+	UpdatedAt       int64                     `json:"updated_at" bson:"updated_at"`
 	Contents        []Content                 `json:"contents" bson:"contents"`
 	GroupedContents map[string]GroupedContent `json:"grouped_contents" bson:"grouped_contents"`
 	// GroupedContents []GroupedContent `json:"grouped_contents" bson:"grouped_contents"`
 }
 
-func salam() string {
+var Results []*RawMaterial
+
+func Salam() string {
 	now := time.Now()
 	hour := now.Hour()
 
@@ -69,31 +71,81 @@ func salam() string {
 		return "Selamat pagi"
 	} else if hour >= 10 && hour <= 13 {
 		return "Selamat siang"
-		// waktu makan yang berwarna, Selera terbuka, nikmati makanan dengan perasaan, Setelah santap siang, kembali bekerja dengan giat, Sebelum lanjut kerja, pinjam dulu seratus."
 	} else if hour >= 14 && hour <= 18 {
-		return "Sore yang cerah, semangat terakhir sebelum pulang."
+		return "Selamat Sore"
 	} else {
-		return "Selamat malam, semoga Anda memiliki waktu istirahat yang baik"
+		return "Selamat Malam"
 	}
 }
 
-func waktu(r RawMaterial) string {
-	t := time.UnixMilli(r.CreatedAt.UnixMilli())
+// var tanggal = time.Now()
+
+func Waktu(timeInt int64) string {
+	t := time.UnixMilli(timeInt)
 
 	hari := t.Day()
 	bulan := t.Month() + 1
 	tahun := t.Year()
 
-	return fmt.Sprintf("%d-%d-%d", hari, bulan, tahun)
+	return fmt.Sprintf("%d/%d/%d", hari, bulan, tahun)
 }
 
 func (r RawMaterial) CetakStrRawmaterialLot() string {
 	result := ""
-	for k, v := range r.GroupedContents {
-		result += fmt.Sprintf("%s: %.2f %d\n", k, v.Weight, v.Count)
+
+	if len(r.GroupedContents) == 0 {
+		result = "-"
+	} else {
+		for k, v := range r.GroupedContents {
+			result += fmt.Sprintf("%s: %.2f %d\n", k, v.Weight, v.Count)
+		}
 	}
 
+	// return strings.Join([]string{
+	// 	"Kode Lot:" + r.Ilc,
+	// 	"Tanggal",
+	// }, "\n")
+
+	// return fmt.Sprintf(`
+	// 	Kode Lot: %s
+	// 	Tanggal Receiving: %s
+	// 	Hasil Hari Ini
+	// 	%s
+	// `, r.Ilc, waktu(r.CreatedAt.UnixMilli()), result)
+
 	return fmt.Sprintf(
-		"Salam :%s\nIlc :%s\nTanggal :%s\nSuplayer :%s\nDetail :\n%s", salam(), r.Ilc, waktu(r), r.Supplier.Name, result,
+		"%s\nIlc : %s\nTanggal : %s\nSuplayer : %s\nDetail :\n%s", Salam(), r.Ilc, Waktu(r.CreatedAt), r.Supplier.Name, result,
 	)
 }
+
+func (r RawMaterial) CetakDataByDate() string {
+	result := ""
+	for k, v := range r.GroupedContents {
+		result += fmt.Sprintf(`
+%s   %d ekor | %.2f KG`, k, v.Count, v.Weight)
+	}
+
+	if r.Type.Whole {
+		return fmt.Sprintf(`
+-----------------------------
+	%s
+	%s (%s %s) 
+-----------------------------
+%s 
+
+Tot %d Loin | %2.f Kg
+	`, r.Ilc, r.Supplier.Name, r.Species.Code, r.Type.Code, result, r.TotalCount, r.TotalWeight)
+	} else {
+		return fmt.Sprintf(`
+-----------------------------
+	%s
+	%s (%s %s) 
+-----------------------------
+Tot %d Loin | %2.f Kg
+			`, r.Ilc, r.Supplier.Name, r.Species.Code, r.Type.Code, r.TotalCount, r.TotalWeight)
+	}
+}
+
+// return fmt.Sprintf(
+// 	"Kode Ilc : %s\nTanggal  : %s\nNama Suplayer : %s \n%s", r.Ilc, Waktu(r.CreatedAt), r.Supplier.Name, result,
+// )
