@@ -29,7 +29,7 @@ func init() {
 }
 
 func main() {
-	defer fmt.Println("Sekedar informasinya untuk hari ini, terima kasih")
+	defer fmt.Println("\nSekedar informasinya untuk hari ini, terima kasih")
 
 	ctx = context.Background()
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -63,7 +63,8 @@ func main() {
 
 	//============== Menampilkan data berdasarkan range Tanggal==================//
 
-	inputTanggal := "2023-06-23"
+	// inputTanggal := "2023-04-15"
+	inputTanggal := "2023-06-26"
 
 	t, err := time.Parse("2006-01-02", inputTanggal)
 	if err != nil {
@@ -76,8 +77,8 @@ func main() {
 	endOfDay := time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 999999999, t.Location())
 	endOfDayInt := endOfDay.UnixNano() / int64(time.Millisecond)
 
-	fmt.Println("Start of Day (millis):", startOfDayInt)
-	fmt.Println("End of Day (millis):", endOfDayInt)
+	// fmt.Println("Start of Day (millis):", startOfDayInt)
+	// fmt.Println("End of Day (millis):", endOfDayInt)
 
 	resultData, err := r.GetDataByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {
@@ -88,7 +89,8 @@ func main() {
 		fmt.Println(data.CetakDataByDate())
 	}
 
-	// //==============================================//
+	//==============================================//
+
 	resultRefined, err := rf.GetDataRefinedByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {
 		log.Fatal(err)
@@ -100,17 +102,15 @@ func main() {
 
 	//==================================================//
 
-	resultProductLogContainer, err := plc.GetDataProductLogByDate(ctx, startOfDayInt, endOfDayInt)
+	resultPLC, err := plc.GetDataProductLogByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, dataProductLogContainer := range resultProductLogContainer {
-		// fmt.Println(dataProductLogContainer.PrintProductLogContainerDataByDate())
-		dataProductLogContainer.PrintProductLogContainerDataByDate()
-	}
+	models.PrintProductLogContainerDataByDate(resultPLC)
 
 	// ======================================================== //
+
 	resultPacking, err := p.GetDataPackingByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {
 		log.Fatal(err)

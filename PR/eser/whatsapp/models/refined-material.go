@@ -71,10 +71,19 @@ func (rf RefinedMaterial) PrintRefinedMaterialDataByDate() string {
 %*s %d  ekor | %*.2f Kg`, -3, k, v.Count, -8, v.Weight)
 	}
 
-	return fmt.Sprintf(`
+	if rf.TotalCount != 0 {
+		return fmt.Sprintf(`
 -----------------------------
           %s        
 -----------------------------
 %s 
 	`, rf.CustomerGroup, result)
+	} else {
+		return fmt.Sprintf(`
+-----------------------------
+          %s        
+-----------------------------
+Tidak ada Data
+	`, rf.CustomerGroup)
+	}
 }

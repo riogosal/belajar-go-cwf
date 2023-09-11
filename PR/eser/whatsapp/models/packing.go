@@ -89,6 +89,7 @@ type Packing struct {
 }
 
 type WeightAndCount struct {
+	TotalMC      int64
 	Count        int64
 	Weight       float64
 	CustNameGrup string
@@ -103,6 +104,7 @@ func PrintPackingDataByDate(resultPacking []*Packing) {
 		if dataCollecPacking[dataPacking.Product.Name].Count == 0 {
 			dataCollecPacking[dataPacking.Product.Name] = WeightAndCount{
 				Count:        int64(dataPacking.TotalCount),
+				TotalMC:      1,
 				Weight:       dataPacking.TotalWeight,
 				CustNameGrup: dataPacking.Customer.Name,
 			}
@@ -110,17 +112,21 @@ func PrintPackingDataByDate(resultPacking []*Packing) {
 			dataCollecPacking[dataPacking.Product.Name] = WeightAndCount{
 				Count:        dataCollecPacking[dataPacking.Product.Name].Count + int64(dataPacking.TotalCount),
 				Weight:       dataCollecPacking[dataPacking.Product.Name].Weight + dataPacking.TotalWeight,
+				TotalMC:      dataCollecPacking[dataPacking.Product.Name].TotalMC + 1,
 				CustNameGrup: dataPacking.Customer.Name,
 			}
 		}
 	}
-	// fmt.Println(dataCollecPacking)r
+	// fmt.Println(dataCollecPacking)
 	for k, v := range dataCollecPacking {
 		fmt.Printf(`
---------------------------------------
+------------------------- 
 %s 
---------------------------------------
-%s %d pcs | %2.2f Kg
-		`, v.CustNameGrup, k, v.Count, v.Weight)
+------------------------- 
+%d pcs | %2.2f Kg
+MC : %d
+		`, k, v.Count, v.Weight, v.TotalMC)
 	}
+	fmt.Printf(`
+Total MC: %d`, len(resultPacking))
 }
