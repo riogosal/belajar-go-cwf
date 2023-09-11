@@ -33,10 +33,12 @@ func main() {
 	var (
 		rs  domain.RawMaterialsService
 		psr domain.ProductService
+		rm  domain.RefinedMaterialServices
 	)
 
 	rs = repositories.NewRawMaterialService(db)
 	psr = repositories.NewProductServiceImpl(db)
+	rm = repositories.NewRefinedMaterialLots(db)
 
 	c, _ := context.WithTimeout(ctx, 10*time.Second)
 
@@ -67,6 +69,7 @@ func main() {
 	IntStartDate := startDate.UnixMilli()
 	IntEndDate := endDate.UnixMilli()
 
+	// Data Raw Materials
 	dataMaterials, err := rs.GetDataByDate(ctx, IntStartDate, IntEndDate)
 	if err != nil {
 		panic(err)
@@ -76,6 +79,17 @@ func main() {
 		fmt.Println(rawMaterialFilterDate.CetakStrRwaMatetirialLot())
 	}
 
+	// Data Refined Material
+	refined, err := rm.GetDataByDate(ctx, IntStartDate, IntEndDate)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, rml := range refined {
+		fmt.Println(rml.PrintDataRefinedMaterial())
+	}
+
+	// Data Packing
 	productDate, err := psr.GetDataByDate(ctx, IntStartDate, IntEndDate)
 	if err != nil {
 		panic(err)
