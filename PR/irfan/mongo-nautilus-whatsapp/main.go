@@ -22,23 +22,26 @@ var (
 )
 
 func init() {
+	fmt.Println("Selamat Sore Chen Woo Fishery (Makassar) ini rangkmuman processing tanggal 2023-06-23")
 	ctx = context.Background()
 	mongoclient = connection.Connecting(ctx, mongoclient, err)
 	db = mongoclient.Database("natulius")
 }
 
 func main() {
-
+	defer fmt.Println("\nSekedar informasinya data produksi untuk hari ini, Terima Kasih")
 	// Repositories
 	var (
 		rs  domain.RawMaterialsService
 		psr domain.ProductService
 		rm  domain.RefinedMaterialServices
+		rp  domain.PackingService
 	)
 
 	rs = repositories.NewRawMaterialService(db)
 	psr = repositories.NewProductServiceImpl(db)
 	rm = repositories.NewRefinedMaterialLots(db)
+	rp = repositories.NewPackingServiceImpl(db)
 
 	c, _ := context.WithTimeout(ctx, 10*time.Second)
 
@@ -63,8 +66,8 @@ func main() {
 		panic(err)
 	}
 
-	startDate := time.Date(2023, time.April, 15, 0, 0, 0, 0, timeZone)
-	endDate := time.Date(2023, time.April, 15, 23, 59, 59, 9999999999, timeZone)
+	startDate := time.Date(2023, time.July, 15, 0, 0, 0, 0, timeZone)
+	endDate := time.Date(2023, time.July, 15, 23, 59, 59, 9999999999, timeZone)
 
 	IntStartDate := startDate.UnixMilli()
 	IntEndDate := endDate.UnixMilli()
@@ -89,7 +92,7 @@ func main() {
 		fmt.Println(rml.PrintDataRefinedMaterial())
 	}
 
-	// Data Packing
+	// Data Product/Retouching
 	productDate, err := psr.GetDataByDate(ctx, IntStartDate, IntEndDate)
 	if err != nil {
 		panic(err)
@@ -97,4 +100,11 @@ func main() {
 	models.DataProductsdate(productDate)
 	// models.DataGroup()
 
+	// Data Packings
+	dataPacking, err := rp.GetDataByDate(ctx, IntStartDate, IntEndDate)
+	if err != nil {
+		panic(err)
+	}
+
+	models.PrintDataPackings(dataPacking)
 }

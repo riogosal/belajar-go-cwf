@@ -2,7 +2,6 @@ package connection
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -22,7 +21,7 @@ func Connecting(ctx context.Context, mongoclient *mongo.Client, err error) *mong
 		log.Fatal("error while trying to ping mongo", err)
 	}
 
-	fmt.Println("mongo connection established")
+	// fmt.Println("mongo connection established")
 
 	return mongoclient
 }

@@ -55,7 +55,7 @@ type ProductLogContainers struct {
 	Total_Weight     float64                     `bson:"total_weight,omitempty" json:"total_weight"`
 	Total_count      int                         `bson:"total_count,omitempty" json:"total_count"`
 	RawTotalCount    int                         `bson:"raw_total_count,omitempty" json:"raw_total_count"`
-	RawTotalWeight   float32                     `bson:"raw_total_weight,omiteempty" json:"raw_total_weight"`
+	RawTotalWeight   float64                     `bson:"raw_total_weight,omiteempty" json:"raw_total_weight"`
 	Created_At       int64                       `bson:"created_at,omitempty" json:"created_at"`
 	Updated_At       int64                       `bson:"updated_at,omitempty" json:"updated_at"`
 	Contents         []Content                   `bson:"contents" json:"contents"`
