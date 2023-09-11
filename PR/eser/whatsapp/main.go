@@ -24,12 +24,27 @@ var (
 	err         error
 )
 
-func init() {
-	fmt.Println("Selamat Malam Chen Woo Fishery (Makassar) ini rangkmuman processing tanggal 2023-06-23")
+// func init() {
+// 	fmt.Println("Selamat Malam Chen Woo Fishery (Makassar) ini rangkmuman processing tanggal 2023-06-23")
+// }
+
+func Salam() string {
+	now := time.Now()
+	hour := now.Hour()
+
+	if hour >= 6 && hour <= 9 {
+		return "Selamat pagi"
+	} else if hour >= 10 && hour <= 13 {
+		return "Selamat siang"
+	} else if hour >= 14 && hour <= 18 {
+		return "Selamat Sore"
+	} else {
+		return "Selamat Malam"
+	}
 }
 
 func main() {
-	defer fmt.Println("\nSekedar informasinya untuk hari ini, terima kasih")
+	defer fmt.Println("\nSekedar informasinya untuk hari ini, Terima Kasih")
 
 	ctx = context.Background()
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -79,6 +94,12 @@ func main() {
 
 	// fmt.Println("Start of Day (millis):", startOfDayInt)
 	// fmt.Println("End of Day (millis):", endOfDayInt)
+
+	year := t.Year()   // type int
+	month := t.Month() // type time.Month
+	day := t.Day()     // type int
+
+	fmt.Println(Salam(), "Chen Woo Fishery (Makassar), berikut rangkmuman processing tanggal", day, month, year)
 
 	resultData, err := r.GetDataByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {

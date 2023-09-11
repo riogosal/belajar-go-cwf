@@ -81,7 +81,7 @@ func (rf RefinedMaterial) PrintRefinedMaterialDataByDate() string {
 	} else {
 		return fmt.Sprintf(`
 -----------------------------
-          %s        
+       %s        
 -----------------------------
 Tidak ada Data
 	`, rf.CustomerGroup)

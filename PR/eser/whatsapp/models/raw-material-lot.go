@@ -63,21 +63,6 @@ type RawMaterial struct {
 
 var Results []*RawMaterial
 
-func Salam() string {
-	now := time.Now()
-	hour := now.Hour()
-
-	if hour >= 6 && hour <= 9 {
-		return "Selamat pagi"
-	} else if hour >= 10 && hour <= 13 {
-		return "Selamat siang"
-	} else if hour >= 14 && hour <= 18 {
-		return "Selamat Sore"
-	} else {
-		return "Selamat Malam"
-	}
-}
-
 // var tanggal = time.Now()
 
 func Waktu(timeInt int64) string {
@@ -106,15 +91,8 @@ func (r RawMaterial) CetakStrRawmaterialLot() string {
 	// 	"Tanggal",
 	// }, "\n")
 
-	// return fmt.Sprintf(`
-	// 	Kode Lot: %s
-	// 	Tanggal Receiving: %s
-	// 	Hasil Hari Ini
-	// 	%s
-	// `, r.Ilc, waktu(r.CreatedAt.UnixMilli()), result)
-
 	return fmt.Sprintf(
-		"%s\nIlc : %s\nTanggal : %s\nSuplayer : %s\nDetail :\n%s", Salam(), r.Ilc, Waktu(r.CreatedAt), r.Supplier.Name, result,
+		"Ilc : %s\nTanggal : %s\nSuplayer : %s\nDetail :\n%s", r.Ilc, Waktu(r.CreatedAt), r.Supplier.Name, result,
 	)
 }
 

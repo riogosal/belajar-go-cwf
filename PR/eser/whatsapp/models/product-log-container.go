@@ -138,12 +138,12 @@ func PrintProductLogContainerDataByDate(productDate []*ProductLogContainer) {
 
 			}
 
-			x := dataProducts[p.CustomerGroup][v.Products.Name][v.Grade]
-			x.Count += v.Count
-			x.Weight += v.Weight
-			// x.Name = v.Product.Name
+			data := dataProducts[p.CustomerGroup][v.Products.Name][v.Grade]
+			data.Count += v.Count
+			data.Weight += v.Weight
+			// data.Name = v.Product.Name
 
-			dataProducts[p.CustomerGroup][v.Products.Name][v.Grade] = x
+			dataProducts[p.CustomerGroup][v.Products.Name][v.Grade] = data
 		}
 
 	}
@@ -151,11 +151,11 @@ func PrintProductLogContainerDataByDate(productDate []*ProductLogContainer) {
 	for i, _ := range dataProducts {
 		fmt.Printf(`
 -------------------------
-    %s
+      %s
 -------------------------`, i)
 		for j, v := range dataProducts[i] {
 			fmt.Printf(`
-	%s`, j)
+%s`, j)
 			for k, val := range v {
 				if k == "" {
 					fmt.Printf(`
