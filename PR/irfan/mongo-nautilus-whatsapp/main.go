@@ -3,6 +3,7 @@ package main
 import (
 	"app-api-natulius/connection"
 	"app-api-natulius/domain"
+	"app-api-natulius/models"
 	"app-api-natulius/repositories"
 	"context"
 	"fmt"
@@ -14,22 +15,28 @@ import (
 )
 
 var (
-	rs          domain.RawMaterialsService
 	ctx         context.Context
-	rawMaterial *mongo.Collection
+	db          *mongo.Database
 	mongoclient *mongo.Client
 	err         error
 )
 
 func init() {
-	ctx = context.TODO()
-
+	ctx = context.Background()
 	mongoclient = connection.Connecting(ctx, mongoclient, err)
-	rawMaterial = mongoclient.Database("natulius").Collection("raw_material_lots")
-	rs = repositories.NewRawMaterialService(rawMaterial, ctx)
+	db = mongoclient.Database("natulius")
 }
 
 func main() {
+
+	// Repositories
+	var (
+		rs  domain.RawMaterialsService
+		psr domain.ProductService
+	)
+
+	rs = repositories.NewRawMaterialService(db)
+	psr = repositories.NewProductServiceImpl(db)
 
 	c, _ := context.WithTimeout(ctx, 10*time.Second)
 
@@ -38,12 +45,42 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	id := "6417b194954fea8407a5aadc"
-	nautilus, err := rs.GetData(id)
+
+	// Get Data By ID
+	// id := "6417b194954fea8407a5aadc"
+	// nautilus, err := rs.GetData(ctx, id)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// fmt.Println(nautilus.CetakStrRwaMatetirialLot())
+
+	// Get Data By Date
+	timeZone, err := time.LoadLocation("Asia/Makassar")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(nautilus.CetakStrRwaMatetirialLot())
+	startDate := time.Date(2023, time.April, 15, 0, 0, 0, 0, timeZone)
+	endDate := time.Date(2023, time.April, 15, 23, 59, 59, 9999999999, timeZone)
+
+	IntStartDate := startDate.UnixMilli()
+	IntEndDate := endDate.UnixMilli()
+
+	dataMaterials, err := rs.GetDataByDate(ctx, IntStartDate, IntEndDate)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, rawMaterialFilterDate := range dataMaterials {
+		fmt.Println(rawMaterialFilterDate.CetakStrRwaMatetirialLot())
+	}
+
+	productDate, err := psr.GetDataByDate(ctx, IntStartDate, IntEndDate)
+	if err != nil {
+		panic(err)
+	}
+	models.DataProductsdate(productDate)
+	// models.DataGroup()
 
 }

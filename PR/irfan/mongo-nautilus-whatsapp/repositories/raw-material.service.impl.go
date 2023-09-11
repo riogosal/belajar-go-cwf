@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"app-api-natulius/constants"
 	"app-api-natulius/domain"
 	"app-api-natulius/models"
 	"context"
@@ -11,29 +12,51 @@ import (
 )
 
 type RawMaterialServiceImpl struct {
-	raw_material_lots *mongo.Collection
-	ctx               context.Context
+	db   *mongo.Database
+	coll *mongo.Collection
 }
 
-func NewRawMaterialService(RawMaterialsCollection *mongo.Collection, ctx context.Context) domain.RawMaterialsService {
+func NewRawMaterialService(db *mongo.Database) domain.RawMaterialsService {
 	return &RawMaterialServiceImpl{
-		raw_material_lots: RawMaterialsCollection,
-		ctx:               ctx,
+		db:   db,
+		coll: db.Collection(string(constants.RawMaterialLots)),
 	}
 }
 
-func (u *RawMaterialServiceImpl) GetData(id string) (*models.RawMaterials, error) {
+func (u *RawMaterialServiceImpl) GetData(ctx context.Context, id string) (*models.RawMaterials, error) {
 	var nautilus *models.RawMaterials
 	dataIdObject, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		panic(err)
 	}
 	filter := bson.M{"_id": dataIdObject}
-	err = u.raw_material_lots.FindOne(u.ctx, filter).Decode(&nautilus)
+	err = u.coll.FindOne(ctx, filter).Decode(&nautilus)
 	if err != nil {
 		panic(err)
 	}
 
 	return nautilus, err
 
+}
+
+func (u *RawMaterialServiceImpl) GetDataByDate(ctx context.Context, startDate int64, endDate int64) ([]*models.RawMaterials, error) {
+
+	filter := bson.M{"created_at": bson.M{"$gte": startDate, "$lte": endDate}}
+	cursor, err := u.coll.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+
+	defer cursor.Close(ctx)
+
+	for cursor.Next(ctx) {
+		var data models.RawMaterials
+		if err := cursor.Decode(&data); err != nil {
+			panic(err)
+		}
+
+		models.DataRawMaterials = append(models.DataRawMaterials, &data)
+	}
+
+	return models.DataRawMaterials, err
 }

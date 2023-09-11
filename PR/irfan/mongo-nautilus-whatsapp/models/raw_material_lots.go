@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -30,6 +29,7 @@ type Supplier struct {
 }
 
 type Contents struct {
+	UUID         string  `json:"uuid" bson:"uuid"`
 	Number       int     `json:"number" bson:"number"`
 	Grade        string  `json:"grade" bson:"grade"`
 	Count        int     `json:"count" bson:"count"`
@@ -70,13 +70,36 @@ type Certificates struct {
 	Updated_at int    `json:"updated_at" bson:"updated_at"`
 }
 
+var DataRawMaterials []*RawMaterials
+
+func DataCountsLoins() {
+
+}
+
 func (r *RawMaterials) CetakStrRwaMatetirialLot() string {
 	DataGradeWeightAndCounts := ""
-	t := time.UnixMilli(int64(r.Created_At)).Local()
-	dataWaktu := fmt.Sprintf("%d-%d-%d", t.Day(), t.Month(), t.Year())
+
 	for l, v := range r.Grouped_Contents {
-		DataGradeWeightAndCounts += fmt.Sprintf("Grade :%s Count :%d Weight :%f\n", l, v.Count, v.Weight)
+		DataGradeWeightAndCounts += fmt.Sprintf("%s %d Ekor | %2.f2 Kg\n", l, v.Count, v.Weight)
 	}
 
-	return fmt.Sprintf(" Kode ILC : %s\n Tanggal : %s\n Nama Supplier : %s\n %s\n", r.ILC, dataWaktu, r.Supplier.Name, DataGradeWeightAndCounts)
+	if r.Type.Code != "GG" {
+		return fmt.Sprintf(`
+-------------------------
+   %s
+   %s (%s,%s)
+-------------------------
+Tot %d Loin | %2.2f Kg
+`, r.ILC, r.Supplier.Name, r.Supplier.Code, r.Type.Code, r.Total_count, r.Total_Weight)
+	} else {
+		return fmt.Sprintf(`
+-------------------------
+   %s
+   %s (%s, %s)
+-------------------------
+%s
+Tot %d Ekor | %2.2f Kg
+`, r.ILC, r.Supplier.Name, r.Species.Code, r.Type.Code, DataGradeWeightAndCounts, r.Total_count, r.Total_Weight)
+	}
+
 }
