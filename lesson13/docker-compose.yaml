@@ -1,0 +1,23 @@
+version: '3.8' # versi docker compose, silahkan cek di https://docs.docker.com/compose/compose-file/04-version-and-name/
+
+services:
+  my-api:
+    container_name: my-api #kalau tidak diisi container_name akan jadi my-api-1
+    image: golang:alpine # alpine linux yang sudah ada golangnya
+    volumes: # link folder app ke container
+      - ./app:/go/src/app
+    working_dir: /go/src/app # kalau tidak di set maka akan ke home directory root user di /root
+    command: go run main.go # entrypoint / command yang akan dijalankan
+    networks: # link network
+      - my-app
+
+  my-db:
+    container_name: my-db #kalau tidak diisi container_name akan jadi my-db-1
+    image: mongo:latest # latest versi terakhir
+    ports: # link port, you can use your mongo compass to connect to this port
+      - 27017:27017 # host:container
+    networks:
+      - my-app
+
+networks:
+  my-app: {}
