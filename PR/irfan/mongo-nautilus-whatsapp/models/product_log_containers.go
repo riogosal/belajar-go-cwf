@@ -25,11 +25,11 @@ type TotalCountAndWeight struct {
 }
 
 type Product struct {
-	UUID     string  `bson:"uuid" json:"uuid"`
-	Code     string  `bson:"code" json:"code"`
-	Name     string  `bson:"name" json:"name"`
-	Category string  `bson:"category" json:"category"`
-	Species  Species `bson:"species" json:"species"`
+	UUID     string  `bson:"uuid,omitempty" json:"uuid,omitempty"`
+	Code     string  `bson:"code,omitempty" json:"code,omitempty"`
+	Name     string  `bson:"name,omitempty" json:"name,omitempty"`
+	Category string  `bson:"category,omitempty" json:"category,omitempty"`
+	Species  Species `bson:"species,omitempty" json:"species,omitempty"`
 }
 
 type Content struct {
