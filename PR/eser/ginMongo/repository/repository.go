@@ -23,7 +23,9 @@ type FilmRepositoryImplementasi struct {
 }
 
 func NewFilmRepository(collection *mongo.Collection) FilmRepository {
-	return &FilmRepositoryImplementasi{Collection: collection}
+	return &FilmRepositoryImplementasi{
+		Collection: collection,
+	}
 }
 
 func (r *FilmRepositoryImplementasi) FindByID(ctx context.Context, id int) (*model.Film, error) {

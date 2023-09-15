@@ -95,11 +95,11 @@ func main() {
 	// fmt.Println("Start of Day (millis):", startOfDayInt)
 	// fmt.Println("End of Day (millis):", endOfDayInt)
 
-	year := t.Year()   // type int
-	month := t.Month() // type time.Month
-	day := t.Day()     // type int
+	year := t.Year()
+	month := t.Month()
+	day := t.Day()
 
-	fmt.Println(Salam(), "Chen Woo Fishery (Makassar), berikut rangkmuman processing tanggal", day, month, year)
+	fmt.Println(Salam(), "Chen Woo Fishery (Makassar), berikut rangkuman processing tanggal", day, month, year)
 
 	resultData, err := r.GetDataByDate(ctx, startOfDayInt, endOfDayInt)
 	if err != nil {
